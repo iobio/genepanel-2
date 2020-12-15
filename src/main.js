@@ -6,6 +6,13 @@ import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false
 
+export const bus = new Vue();
+
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+
+import 'iobio-phenotype-extractor-vue/dist/iobio.css'
+
+
 new Vue({
   router,
   store,
