@@ -1,72 +1,222 @@
 <template>
   <div>
-    <v-app-bar
-      color="primary"
-      dark
-    >
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-      <v-toolbar-title>genepanel.iobio</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn text>
-        <v-icon>input</v-icon> 
-        <strong class="ml-1">EXPORT</strong>
-      </v-btn>
-      <v-btn text>
-        <v-icon>autorenew</v-icon>
-        <strong class="ml-1">CLEAR ALL</strong>
-      </v-btn>
-      <v-btn text>
-        <v-icon>help</v-icon>
-        <strong class="ml-1">HELP</strong>
-      </v-btn>
-    </v-app-bar>
+    <div v-if="showLandingPage">
+      <v-app-bar
+        color="primary"
+        dark
+      >
+        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+        <v-toolbar-title>genepanel.iobio</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn text>
+          <v-icon>input</v-icon> 
+          <strong class="ml-1">EXPORT</strong>
+        </v-btn>
+        <v-btn text>
+          <v-icon>autorenew</v-icon>
+          <strong class="ml-1">CLEAR ALL</strong>
+        </v-btn>
+        <v-btn text>
+          <v-icon>help</v-icon>
+          <strong class="ml-1">HELP</strong>
+        </v-btn>
+      </v-app-bar>
+      <v-parallax
+        dark
+      >
+        <v-row
+          align="center"
+          justify="center"
+        >
+          <v-col
+            class="text-center"
+            cols="12"
+            style="color:#45688e"
 
-    <v-container>
-      <v-row class="text-center">
-        <v-col class="mb-4 mt-5 pt-5">
-          <h1 class="display-2 font-weight-bold mb-3">
-            genepanel.iobio
+          >
+            <!-- <h1 class="display-1 font-weight-thin mb-4">
+              Vuetify
+            </h1> -->
+            <h1 class="display-2 font-weight-bold mb-4 mt-5" style="font-weight: 500 !important; font-family: 'Poppins' !important; color: #1976d2 !important">
+              genepanel.iobio
+            </h1>
+            <p class="subheading font-weight-regular">
+              Generate list of genes based on suspected conditions and phenotypes.
+            </p>
+            <v-container>
+            </v-container>
 
-          </h1>
+            <v-container>
+              <div>
+              <!-- <v-text-field
+                  outlined
+                  type="text"
+                  id="single_entry_input_landing"
+                  ref="single_entry_input_landing"
+                  v-model="textNotes"
+                  autocomplete="off"
+                  v-show="textNotes.length<45"
+                  placeholder="Enter Phenotypes or Type (paste) Clinical Note"
+                >
+                  <template v-slot:append-outer>
+                    <v-btn style="margin-top:-10px" large :disabled="textNotes.length<4" @click="extract" color="primary">Submit</v-btn>
+                  </template>
+                </v-text-field>
+                <typeahead
+                  v-model="search"
+                  hide-details="false"
+                  target="#single_entry_input_landing"
+                  force-select :force-clear="true"
+                  :data="DiseaseNames"
+                  :limit="parseInt(100)"
+                  v-on:keydown="EnterForSearch"
+                  v-on:input="mouseSelect"
+                  item-key="DiseaseName"/> -->
+                <v-textarea
+                  v-show="textNotes.length>=0"
+                  v-model="textNotes"
+                  ref="single_entry_input_landing_textarea"
+                  id="single_entry_input_landing_textarea"
+                  name="input-7-4"
+                  rows="1"
+                  outlined
+                >
+                  <template v-slot:append-outer>
+                    <v-btn style="margin-top:-10px" large :disabled="textNotes.length<4" @click="extract"  color="primary">Submit</v-btn>
+                  </template>
+                </v-textarea>
 
-          <p class="subheading font-weight-regular">
-            Generate list of genes based on suspected conditions and phenotypes.
-          </p>
-        </v-col>
-      </v-row>
-      <PhenotypeExtractor
-        :phenotypes="analysis.payload.phenotypes"
-        :summaryFullGeneList="analysis.payload.summaryGeneList"
-        @summaryGenes="summaryGenes($event)"
-        @saveSearchedPhenotypes="saveSearchedPhenotypes($event)"
-        :VennDiagramData="analysis.payload.VennDiagramData"
-        @GtrGeneList="GtrGeneList($event)"
-        @PhenolyzerGeneList="PhenolyzerGeneList($event)"
-        @HpoGeneList="HpoGeneList($event)"
-        :AddedGenes="AddedGenes"
-        @vennData="vennData($event)"
-        :demoTextNote="analysis.payload.demoTextNote"
-        @VennDiagramData="VennDiagramData($event)"
-        :geneToDelete="geneToDelete"
-        @new_term_searched="new_term_searched($event)">
-      </PhenotypeExtractor>
+                <div >
+                  Try some suggestions: 
+                  <v-chip
+                    class="ma-2"
+                    color="primary"
+                    outlined
+                    small
+                  >
+                    Demo clinical note 
+                  </v-chip>
+                  <v-chip
+                    class="ma-2"
+                    color="primary"
+                    outlined
+                    small
+                  >
+                    Treacher collins syndrome
+                  </v-chip>
+                  <v-chip
+                    class="ma-2"
+                    color="primary"
+                    outlined
+                    small
+                  >
+                    Dejerine sottas disease
+                  </v-chip>
+                </div>
+              </div>
+            </v-container>
+            <!-- <h4 class="subheading">
+              Build your application today!
+            </h4> -->
+          </v-col>
+        </v-row>
+      </v-parallax>
+    </div>
+    <div v-show="!showLandingPage">
+      <v-app-bar
+        color="primary"
+        dark
+      >
+        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+        <v-toolbar-title>genepanel.iobio</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn text>
+          <v-icon>input</v-icon> 
+          <strong class="ml-1">EXPORT</strong>
+        </v-btn>
+        <v-btn text>
+          <v-icon>autorenew</v-icon>
+          <strong class="ml-1">CLEAR ALL</strong>
+        </v-btn>
+        <v-btn text>
+          <v-icon>help</v-icon>
+          <strong class="ml-1">HELP</strong>
+        </v-btn>
+      </v-app-bar>
 
-      <GeneList
-        :summaryGeneList="analysis.payload.genesReport"
-        @importedGenes="importedGenes($event)"
-        @UpdateListOnDelete="UpdateListOnDelete($event)"
-        :phenotypeTerms="analysis.payload.phenotypes"
-        :venn_diag_data="venn_diag_data"
-        @bus_delete_gene="bus_delete_gene"
-        @gene_to_delete="gene_to_delete($event)"
-        @add_to_gene_set="add_to_gene_set($event)"
-        :selectedGenesForGeneSet="analysis.payload.selectedGenesForGeneSet"
-        @update_genes_top="update_genes_top($event)"
-        :topGenesSelectedCount="analysis.payload.genesTop"
-        :newTermSearched="newTermSearched">
-      </GeneList>
+      <v-container>
+        <PhenotypeExtractor
+          :phenotypes="analysis.payload.phenotypes"
+          :summaryFullGeneList="analysis.payload.summaryGeneList"
+          @summaryGenes="summaryGenes($event)"
+          @saveSearchedPhenotypes="saveSearchedPhenotypes($event)"
+          :VennDiagramData="analysis.payload.VennDiagramData"
+          @GtrGeneList="GtrGeneList($event)"
+          @PhenolyzerGeneList="PhenolyzerGeneList($event)"
+          @HpoGeneList="HpoGeneList($event)"
+          :AddedGenes="AddedGenes"
+          @vennData="vennData($event)"
+          :demoTextNote="analysis.payload.demoTextNote"
+          @VennDiagramData="VennDiagramData($event)"
+          :geneToDelete="geneToDelete"
+          @new_term_searched="new_term_searched($event)"
+          :textNotesLandingPage="textNotesLandingPage">
+        </PhenotypeExtractor>
 
-    </v-container>
+        <GeneList
+          :summaryGeneList="analysis.payload.genesReport"
+          @importedGenes="importedGenes($event)"
+          @UpdateListOnDelete="UpdateListOnDelete($event)"
+          :phenotypeTerms="analysis.payload.phenotypes"
+          :venn_diag_data="venn_diag_data"
+          @bus_delete_gene="bus_delete_gene"
+          @gene_to_delete="gene_to_delete($event)"
+          @add_to_gene_set="add_to_gene_set($event)"
+          :selectedGenesForGeneSet="analysis.payload.selectedGenesForGeneSet"
+          @update_genes_top="update_genes_top($event)"
+          :topGenesSelectedCount="analysis.payload.genesTop"
+          :newTermSearched="newTermSearched">
+        </GeneList>
+
+      </v-container>
+    </div>
+
+
+    <div>
+      <v-container>
+        <h2 class="mt-5" style="font-weight: 500">How it works?</h2>
+          <v-stepper class="mt-5">
+            <v-stepper-header>
+              <v-stepper-step
+                complete
+                step="1"
+              >
+                Enter a clinical note or select a condition
+
+              </v-stepper-step>
+        
+              <v-divider></v-divider>
+        
+              <v-stepper-step
+                complete
+                step="2"
+              >
+                Review the terms and submit
+              </v-stepper-step>
+        
+              <v-divider></v-divider>
+        
+              <v-stepper-step
+                complete
+                step="3"
+              >
+                App compiles a comprehensive gene list
+              </v-stepper-step>
+            </v-stepper-header>
+          </v-stepper>
+
+      </v-container>
+    </div>
   </div>
 </template>
 
@@ -95,6 +245,9 @@ import analysisData from '../data/analysis.json';
       selectedGenesForGeneSet: [],
       genesTop: 20,
       newTermSearched: false,
+      showLandingPage: true,
+      textNotes: '',
+      textNotesLandingPage: ''
 
     }),
 
@@ -155,7 +308,13 @@ import analysisData from '../data/analysis.json';
       },
       new_term_searched(flag){
         this.newTermSearched = flag;
+      },
+      extract(){
+        this.showLandingPage = false;
+        this.textNotesLandingPage = this.textNotes;
+        console.log("this.textNotesLandingPage", this.textNotesLandingPage);
       }
+
     }
   }
 </script>
@@ -175,9 +334,26 @@ import analysisData from '../data/analysis.json';
     width: 600px
     margin-top: 7px
 
+  #single_entry_input_landing
+    width: 600px
+    height: 49px
+    margin-top: 7px
+    border: 0
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)
+    border-radius: 0
+    font-size: 16px
+
+  #single_entry_input_landing_textarea
+    width: 600px
+    margin-top: 7px
+
+
   .reviewCard
     height: 250px
     overflow-y: auto
+
+  .v-parallax
+    background-color: #f9fbff   
 
 
   @media (min-width: 960px)

@@ -1,8 +1,8 @@
 <template>
-  <v-app>
-    <v-main>
+  <v-app style="background-color: white">
+    <v-content>
       <Main/>
-    </v-main>
+    </v-content>
   </v-app>
 </template>
 
