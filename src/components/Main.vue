@@ -21,12 +21,15 @@
           <strong class="ml-1">HELP</strong>
         </v-btn>
       </v-app-bar>
-      <v-parallax
+      <div
         dark
+        style="height: 500px; background-color: #f9fbff; padding-top: 200px; padding-bottom:100px"
+        class="pt-10 elevation-1"
       >
         <v-row
           align="center"
           justify="center"
+          style="margin-top: 50px"
         >
           <v-col
             class="text-center"
@@ -86,13 +89,14 @@
                   </template>
                 </v-textarea>
 
-                <div >
+                <div style="float: left !important">
                   Try some suggestions: 
                   <v-chip
                     class="ma-2"
                     color="primary"
                     outlined
                     small
+                    @click="textNotes='Charcot-Marie-Tooth disease; demyelination; Dejerine sottas disease possibly; sensory neuropathy; hammertoes; difficulty walking'"
                   >
                     Demo clinical note 
                   </v-chip>
@@ -101,6 +105,7 @@
                     color="primary"
                     outlined
                     small
+                    @click="textNotes='Treacher collins syndrome'"
                   >
                     Treacher collins syndrome
                   </v-chip>
@@ -109,6 +114,8 @@
                     color="primary"
                     outlined
                     small
+                    @click="textNotes='Dejerine sottas disease'"
+
                   >
                     Dejerine sottas disease
                   </v-chip>
@@ -120,7 +127,7 @@
             </h4> -->
           </v-col>
         </v-row>
-      </v-parallax>
+      </div>
     </div>
     <div v-show="!showLandingPage">
       <v-app-bar
@@ -182,7 +189,7 @@
     </div>
 
 
-    <div>
+    <div v-if="showLandingPage">
       <v-container>
         <h2 class="mt-5" style="font-weight: 500">How it works?</h2>
           <v-stepper class="mt-5">
@@ -217,6 +224,7 @@
 
       </v-container>
     </div>
+    
   </div>
 </template>
 
