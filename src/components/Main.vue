@@ -37,9 +37,7 @@
             style="color:#45688e"
 
           >
-            <!-- <h1 class="display-1 font-weight-thin mb-4">
-              Vuetify
-            </h1> -->
+          
             <h1 class="display-2 font-weight-bold mb-4 mt-5" style="font-weight: 500 !important; font-family: 'Poppins' !important; color: #1976d2 !important">
               genepanel.iobio
             </h1>
@@ -126,8 +124,10 @@
               Build your application today!
             </h4> -->
           </v-col>
+          
         </v-row>
       </div>
+
     </div>
     <div v-show="!showLandingPage">
       <v-app-bar
