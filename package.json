@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "export-to-csv": "^0.2.1",
     "file-saver": "^2.0.5",
     "iobio-phenotype-extractor-vue": "^4.2.0",
     "v-clipboard": "^2.2.3",

@@ -156,6 +156,9 @@
             <v-list-item @click="exportGenes('exportToFile')"> 
               <v-list-item-title><v-icon>input</v-icon>&nbsp; &nbsp;Export GTR genes to file</v-list-item-title>
             </v-list-item>
+            <v-list-item @click="exportGenes('exportAsCSV')"> 
+              <v-list-item-title><v-icon>input</v-icon>&nbsp; &nbsp;Export GTR genes to file</v-list-item-title>
+            </v-list-item>
           </v-list>
         </v-menu>
         <v-btn text>
@@ -250,6 +253,7 @@
 <script>
 import NewComponents from 'iobio-phenotype-extractor-vue';
 import analysisData from '../data/analysis.json';
+import { ExportToCsv } from 'export-to-csv';
 var FileSaver = require('file-saver');
 
   export default {
@@ -356,6 +360,22 @@ var FileSaver = require('file-saver');
         else if (this.exportAction === 'exportToFile') {
           var blob = new Blob([obj.selected], {type: "text/plain;charset=utf-8"});
           FileSaver.saveAs(blob, "Genes.txt");  
+        }
+        else if(this.exportAction === 'exportAsCSV') {
+          var data = obj.summary.filter(gene => gene.inGeneSet);
+          const options = {
+            fieldSeparator: ',',
+            quoteStrings: '"',
+            decimalseparator: '.',
+            showLabels: true,
+            showTitle: true,
+            title: 'Genes',
+            useBom: true,
+            useKeysAsHeaders: true,
+            filename: 'Genes'
+          };
+          const csvExporter = new ExportToCsv(options);
+          csvExporter.generateCsv(data);
         }
         
         this.exportGenesFlag = obj.exportFlag;
