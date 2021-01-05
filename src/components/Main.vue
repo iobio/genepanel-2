@@ -137,7 +137,7 @@
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
         <v-toolbar-title>genepanel.iobio</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn text>
+        <v-btn text @click="exportGenes">
           <v-icon>input</v-icon> 
           <strong class="ml-1">EXPORT</strong>
         </v-btn>
@@ -182,7 +182,9 @@
           :selectedGenesForGeneSet="analysis.payload.selectedGenesForGeneSet"
           @update_genes_top="update_genes_top($event)"
           :topGenesSelectedCount="analysis.payload.genesTop"
-          :newTermSearched="newTermSearched">
+          :newTermSearched="newTermSearched"
+          @exported_genes="exported_genes($event)"
+          :exportGenesFlag="exportGenesFlag">
         </GeneList>
 
       </v-container>
@@ -255,7 +257,8 @@ import analysisData from '../data/analysis.json';
       newTermSearched: false,
       showLandingPage: true,
       textNotes: '',
-      textNotesLandingPage: ''
+      textNotesLandingPage: '',
+      exportGenesFlag: false,
 
     }),
 
@@ -321,7 +324,15 @@ import analysisData from '../data/analysis.json';
         this.showLandingPage = false;
         this.textNotesLandingPage = this.textNotes;
         console.log("this.textNotesLandingPage", this.textNotesLandingPage);
-      }
+      },
+      exportGenes(){
+        this.exportGenesFlag=true
+      },
+      exported_genes(obj){
+        console.log("selected", obj.selected);
+        console.log("summaryGenes", obj.summary);
+        this.exportGenesFlag = obj.exportFlag;
+      },
 
     }
   }
