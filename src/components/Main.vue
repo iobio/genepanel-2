@@ -349,7 +349,7 @@ import analysisData from '../data/analysis.json';
         console.log("selected", obj.selected);
         console.log("summaryGenes", obj.summary);
         this.exportGenesFlag = obj.exportFlag;
-        this.$clipboard(obj.selected);
+        this.$clipboard(obj.selected.join(", "));
       },
 
     }
