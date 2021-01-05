@@ -149,11 +149,11 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item @click="exportGenes"> 
+            <v-list-item @click="exportGenes('copyToClipboard')"> 
               <v-list-item-title><v-icon>content_copy</v-icon>&nbsp; &nbsp;Copy genes to clipboard</v-list-item-title>
               <!-- <v-list-item-title><v-icon>save</v-icon>&nbsp; &nbsp;Export genes as CSV</v-list-item-title> -->
             </v-list-item>
-            <v-list-item @click="exportGenes"> 
+            <v-list-item @click="exportGenes('exportToFile')"> 
               <v-list-item-title><v-icon>input</v-icon>&nbsp; &nbsp;Export GTR genes to file</v-list-item-title>
             </v-list-item>
           </v-list>
@@ -250,6 +250,7 @@
 <script>
 import NewComponents from 'iobio-phenotype-extractor-vue';
 import analysisData from '../data/analysis.json';
+var FileSaver = require('file-saver');
 
   export default {
     name: 'Main',
@@ -276,7 +277,7 @@ import analysisData from '../data/analysis.json';
       textNotes: '',
       textNotesLandingPage: '',
       exportGenesFlag: false,
-
+      exportAction: '',
     }),
 
     created() {
@@ -342,14 +343,24 @@ import analysisData from '../data/analysis.json';
         this.textNotesLandingPage = this.textNotes;
         console.log("this.textNotesLandingPage", this.textNotesLandingPage);
       },
-      exportGenes(){
+      exportGenes(action){
+        this.exportAction = action;
         this.exportGenesFlag=true
       },
       exported_genes(obj){
         console.log("selected", obj.selected);
         console.log("summaryGenes", obj.summary);
+        if (this.exportAction === 'copyToClipboard') {
+          this.$clipboard(obj.selected.join(", "));
+        }
+        else if (this.exportAction === 'exportToFile') {
+          var blob = new Blob([obj.selected], {type: "text/plain;charset=utf-8"});
+          FileSaver.saveAs(blob, "Genes.txt");  
+        }
+        
         this.exportGenesFlag = obj.exportFlag;
-        this.$clipboard(obj.selected.join(", "));
+        this.exportAction = '';
+
       },
 
     }
