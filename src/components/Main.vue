@@ -137,10 +137,27 @@
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
         <v-toolbar-title>genepanel.iobio</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn text @click="exportGenes">
-          <v-icon>input</v-icon> 
-          <strong class="ml-1">EXPORT</strong>
-        </v-btn>
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              text
+            >
+              <v-icon>input</v-icon> 
+              <strong class="ml-1">EXPORT</strong>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item @click="exportGenes"> 
+              <v-list-item-title><v-icon>content_copy</v-icon>&nbsp; &nbsp;Copy genes to clipboard</v-list-item-title>
+              <!-- <v-list-item-title><v-icon>save</v-icon>&nbsp; &nbsp;Export genes as CSV</v-list-item-title> -->
+            </v-list-item>
+            <v-list-item @click="exportGenes"> 
+              <v-list-item-title><v-icon>input</v-icon>&nbsp; &nbsp;Export GTR genes to file</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
         <v-btn text>
           <v-icon>autorenew</v-icon>
           <strong class="ml-1">CLEAR ALL</strong>
@@ -332,6 +349,7 @@ import analysisData from '../data/analysis.json';
         console.log("selected", obj.selected);
         console.log("summaryGenes", obj.summary);
         this.exportGenesFlag = obj.exportFlag;
+        this.$clipboard(obj.selected);
       },
 
     }

@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "iobio-phenotype-extractor-vue": "^4.1.0",
+    "iobio-phenotype-extractor-vue": "^4.2.0",
+    "v-clipboard": "^2.2.3",
     "vue": "^2.6.11",
     "vue-particles": "^1.0.9",
     "vue-router": "^3.2.0",

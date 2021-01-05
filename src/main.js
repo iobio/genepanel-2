@@ -4,6 +4,9 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 import VueParticles from 'vue-particles'
+import Clipboard from 'v-clipboard'
+
+Vue.use(Clipboard)
 
 Vue.config.productionTip = false
 
