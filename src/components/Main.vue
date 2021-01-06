@@ -157,7 +157,7 @@
               <v-list-item-title><v-icon>input</v-icon>&nbsp; &nbsp;Export GTR genes to file</v-list-item-title>
             </v-list-item>
             <v-list-item @click="exportGenes('exportAsCSV')"> 
-              <v-list-item-title><v-icon>input</v-icon>&nbsp; &nbsp;Export GTR genes to file</v-list-item-title>
+              <v-list-item-title><v-icon>save</v-icon>&nbsp; &nbsp;Export genes as CSV</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -351,6 +351,32 @@ var FileSaver = require('file-saver');
         this.exportAction = action;
         this.exportGenesFlag=true
       },
+      getSearchTermsForCSV(data) {
+        if(data.length){
+          var arr = []; 
+          data.map(term => {
+            var searchTerm = term.searchTerm;
+            arr.push(searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1));
+          })
+          return arr.join(", ");
+        }
+        else {
+          return " ";
+        }
+      },
+      getHpoPhenotypeForCSV(data) {
+        if(data.length){
+          var arr = []; 
+          data.map(term => {
+            var hpoPhenotype = term.hpoPhenotype;
+            arr.push(hpoPhenotype.charAt(0).toUpperCase() + hpoPhenotype.slice(1));
+          })
+          return arr.join(", ");
+        }
+        else {
+          return " ";
+        }
+      },
       exported_genes(obj){
         console.log("selected", obj.selected);
         console.log("summaryGenes", obj.summary);
@@ -363,6 +389,17 @@ var FileSaver = require('file-saver');
         }
         else if(this.exportAction === 'exportAsCSV') {
           var data = obj.summary.filter(gene => gene.inGeneSet);
+          var csv_data = data.map(gene => {
+            return {
+              gene_name: gene.name,
+              sources: gene.source.join(),
+              gene_id: gene.geneId!==undefined?gene.geneId:" ",
+              searchTermsGtr: this.getSearchTermsForCSV(gene.searchTermsGtr),
+              searchTermsPhenolyzer: this.getSearchTermsForCSV(gene.searchTermsPhenolyzer),
+              searchTermHpo: this.getSearchTermsForCSV(gene.searchTermHpo),
+              hpoPhenotype: this.getHpoPhenotypeForCSV(gene.searchTermHpo),
+            }
+          })
           const options = {
             fieldSeparator: ',',
             quoteStrings: '"',
@@ -371,11 +408,12 @@ var FileSaver = require('file-saver');
             showTitle: true,
             title: 'Genes',
             useBom: true,
-            useKeysAsHeaders: true,
-            filename: 'Genes'
+            // useKeysAsHeaders: true,
+            filename: 'Genes',
+            headers: ['Gene Name', 'Source(s)', 'Gene ID', 'GTR Search term', 'Phenolyzer search term', 'HPO ID', 'HPO Phenotype']
           };
           const csvExporter = new ExportToCsv(options);
-          csvExporter.generateCsv(data);
+          csvExporter.generateCsv(csv_data);
         }
         
         this.exportGenesFlag = obj.exportFlag;
