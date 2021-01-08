@@ -12,7 +12,7 @@
           <v-icon>input</v-icon> 
           <strong class="ml-1">EXPORT</strong>
         </v-btn>
-        <v-btn text>
+        <v-btn text @click="newAnalysisDialog = true">
           <v-icon>autorenew</v-icon>
           <strong class="ml-1">CLEAR ALL</strong>
         </v-btn>
@@ -161,7 +161,7 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-btn text>
+        <v-btn text @click="newAnalysisDialog = true">
           <v-icon>autorenew</v-icon>
           <strong class="ml-1">CLEAR ALL</strong>
         </v-btn>
@@ -170,6 +170,20 @@
           <strong class="ml-1">HELP</strong>
         </v-btn>
       </v-app-bar>
+
+      <v-container>
+        <v-dialog v-model="newAnalysisDialog" persistent max-width="450">
+          <v-card>
+            <v-card-title class="headline">Are you sure you want to clear all?</v-card-title>
+            <v-card-text class="mt-4">Clicking "Yes" will clear all results begin a new analysis.</v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click.native="forceReload">Yes</v-btn>
+              <v-btn color="blue darken-1" text @click.native="newAnalysisDialog = false">No</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-container>
 
       <v-container>
         <PhenotypeExtractor
@@ -282,6 +296,7 @@ var FileSaver = require('file-saver');
       textNotesLandingPage: '',
       exportGenesFlag: false,
       exportAction: '',
+      newAnalysisDialog: false,
     }),
 
     created() {
@@ -419,6 +434,9 @@ var FileSaver = require('file-saver');
         this.exportGenesFlag = obj.exportFlag;
         this.exportAction = '';
 
+      },
+      forceReload() {
+        window.location.reload();
       },
 
     }
