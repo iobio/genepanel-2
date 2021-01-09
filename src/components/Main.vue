@@ -5,21 +5,21 @@
         color="primary"
         dark
       >
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
-        <v-toolbar-title>genepanel.iobio</v-toolbar-title>
+        <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
+        <v-toolbar-title class="ml-5"> <strong>genepanel.iobio</strong> </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn text>
-          <v-icon>input</v-icon> 
-          <strong class="ml-1">EXPORT</strong>
-        </v-btn>
-        <v-btn text @click="newAnalysisDialog = true">
-          <v-icon>autorenew</v-icon>
-          <strong class="ml-1">CLEAR ALL</strong>
-        </v-btn>
         <v-btn text>
           <v-icon>help</v-icon>
           <strong class="ml-1">HELP</strong>
         </v-btn>
+        <a href="https://bmcmedgenomics.biomedcentral.com/articles/10.1186/s12920-019-0641-1" target="_blank">
+          <v-btn text>
+            <v-icon>book</v-icon>
+            <strong class="ml-1">CITATION</strong>
+          </v-btn>
+        </a>
+      <AppsMenu></AppsMenu>
+        
       </v-app-bar>
       <div
         dark
@@ -134,8 +134,8 @@
         color="primary"
         dark
       >
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
-        <v-toolbar-title>genepanel.iobio</v-toolbar-title>
+        <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
+        <v-toolbar-title class="ml-5"> <strong>genepanel.iobio</strong> </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
@@ -265,6 +265,8 @@
 </template>
 
 <script>
+import AppsMenu from '../partials/AppsMenu';
+
 import NewComponents from 'iobio-phenotype-extractor-vue';
 import analysisData from '../data/analysis.json';
 import { ExportToCsv } from 'export-to-csv';
@@ -274,7 +276,8 @@ var FileSaver = require('file-saver');
     name: 'Main',
 
     components: {
-      ...NewComponents
+      ...NewComponents,
+      AppsMenu
     },
 
     data: () => ({
