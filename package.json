@@ -13,6 +13,7 @@
     "export-to-csv": "^0.2.1",
     "file-saver": "^2.0.5",
     "iobio-phenotype-extractor-vue": "^4.2.0",
+    "uiv": "^1.2.1",
     "v-clipboard": "^2.2.3",
     "vue": "^2.6.11",
     "vue-particles": "^1.0.9",

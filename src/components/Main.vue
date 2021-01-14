@@ -42,32 +42,39 @@
 
             <v-container>
               <div>
-                <!-- <v-text-field
+                <v-text-field
                   outlined
                   type="text"
                   id="single_entry_input_landing"
                   ref="single_entry_input_landing"
                   v-model="textNotes"
                   autocomplete="off"
-                  v-show="textNotes.length<45"
+                  v-show="textNotes.length < 45"
                   placeholder="Enter Phenotypes or Type (paste) Clinical Note"
                 >
                   <template v-slot:append-outer>
-                    <v-btn style="margin-top:-10px" large :disabled="textNotes.length<4" @click="extract" color="primary">Submit</v-btn>
+                    <v-btn
+                      style="margin-top:-10px"
+                      large
+                      :disabled="textNotes.length < 4"
+                      @click="extract"
+                      color="primary"
+                      >Submit</v-btn
+                    >
                   </template>
                 </v-text-field>
                 <typeahead
                   v-model="search"
                   hide-details="false"
                   target="#single_entry_input_landing"
-                  force-select :force-clear="true"
+                  force-select
+                  :force-clear="true"
                   :data="DiseaseNames"
                   :limit="parseInt(100)"
-                  v-on:keydown="EnterForSearch"
-                  v-on:input="mouseSelect"
-                  item-key="DiseaseName"/> -->
+                  item-key="DiseaseName"
+                />
                 <v-textarea
-                  v-show="textNotes.length >= 0"
+                  v-show="textNotes.length >= 45"
                   v-model="textNotes"
                   ref="single_entry_input_landing_textarea"
                   id="single_entry_input_landing_textarea"
@@ -272,6 +279,11 @@ import analysisData from "../data/analysis.json";
 import { ExportToCsv } from "export-to-csv";
 var FileSaver = require("file-saver");
 
+import { Typeahead } from "uiv";
+
+import DiseaseNamesData from "../data/DiseaseNames.json";
+import DiseaseNames from "../data/DiseaseNamesCleaned.json";
+
 export default {
   name: "Main",
 
@@ -300,10 +312,25 @@ export default {
     exportGenesFlag: false,
     exportAction: "",
     newAnalysisDialog: false,
+    search: "",
   }),
 
   created() {
     this.analysis = analysisData;
+  },
+
+  computed: {
+    DiseaseNames: function() {
+      return DiseaseNames.data.sort(function(a, b) {
+        if (a.DiseaseName < b.DiseaseName) {
+          return -1;
+        } else if (a.DiseaseName > b.DiseaseName) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+    },
   },
 
   methods: {
