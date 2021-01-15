@@ -175,6 +175,15 @@
           <v-icon>help</v-icon>
           <strong class="ml-1">HELP</strong>
         </v-btn>
+        <a
+          href="https://bmcmedgenomics.biomedcentral.com/articles/10.1186/s12920-019-0641-1"
+          target="_blank"
+        >
+          <v-btn text>
+            <v-icon>book</v-icon>
+            <strong class="ml-1">CITATION</strong>
+          </v-btn>
+        </a>
         <AppsMenu></AppsMenu>
       </v-app-bar>
 
@@ -386,7 +395,11 @@ export default {
     },
     extract(type) {
       if (type === "typeahead") {
-        this.textNotesLandingPage = this.search.DiseaseName;
+        if (this.search.DiseaseName !== undefined) {
+          this.textNotesLandingPage = this.search.DiseaseName;
+        } else {
+          this.textNotesLandingPage = this.textNotes;
+        }
       } else if (type === "textarea") {
         this.textNotesLandingPage = this.textNotes;
       }
