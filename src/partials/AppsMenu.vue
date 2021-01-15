@@ -14,6 +14,11 @@
       </v-list-item>
       <v-list-item>
         <v-list-item-title
+          ><a href="http://clin.iobio.io/" target="_blank">clin.iobio</a>
+        </v-list-item-title>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item-title
           ><a href="http://bam.iobio.io/" target="_blank">bam.iobio</a>
         </v-list-item-title>
       </v-list-item>

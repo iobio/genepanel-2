@@ -57,7 +57,7 @@
                       style="margin-top:-10px"
                       large
                       :disabled="textNotes.length < 4"
-                      @click="extract"
+                      @click="extract('typeahead')"
                       color="primary"
                       >Submit</v-btn
                     >
@@ -87,7 +87,7 @@
                       style="margin-top:-10px"
                       large
                       :disabled="textNotes.length < 4"
-                      @click="extract"
+                      @click="extract('textarea')"
                       color="primary"
                       >Submit</v-btn
                     >
@@ -384,10 +384,13 @@ export default {
     new_term_searched(flag) {
       this.newTermSearched = flag;
     },
-    extract() {
+    extract(type) {
+      if (type === "typeahead") {
+        this.textNotesLandingPage = this.search.DiseaseName;
+      } else if (type === "textarea") {
+        this.textNotesLandingPage = this.textNotes;
+      }
       this.showLandingPage = false;
-      this.textNotesLandingPage = this.textNotes;
-      console.log("this.textNotesLandingPage", this.textNotesLandingPage);
     },
     exportGenes(action) {
       this.exportAction = action;
