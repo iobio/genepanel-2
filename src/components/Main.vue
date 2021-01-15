@@ -248,6 +248,9 @@
           :newTermSearched="newTermSearched"
           @exported_genes="exported_genes($event)"
           :exportGenesFlag="exportGenesFlag"
+          :gtrResourceUsed="gtrResourceUsed"
+          :hpoResourceUsed="hpoResourceUsed"
+          :PhenolyzerResourceUsed="PhenolyzerResourceUsed"
         >
         </GeneList>
       </v-container>
@@ -322,6 +325,9 @@ export default {
     exportAction: "",
     newAnalysisDialog: false,
     search: "",
+    gtrResourceUsed: false,
+    hpoResourceUsed: false,
+    PhenolyzerResourceUsed: false,
   }),
 
   created() {
@@ -487,6 +493,27 @@ export default {
     },
     forceReload() {
       window.location.reload();
+    },
+    PhenolyzerGeneList(genes) {
+      if (genes.length === 0) {
+        this.PhenolyzerResourceUsed = false;
+      } else if (genes.length > 1) {
+        this.PhenolyzerResourceUsed = true;
+      }
+    },
+    HpoGeneList(genes) {
+      if (genes.length === 0) {
+        this.hpoResourceUsed = false;
+      } else if (genes.length > 1) {
+        this.hpoResourceUsed = true;
+      }
+    },
+    GtrGeneList(genes) {
+      if (genes.length === 0) {
+        this.gtrResourceUsed = false;
+      } else if (genes.length > 1) {
+        this.gtrResourceUsed = true;
+      }
     },
   },
 };
