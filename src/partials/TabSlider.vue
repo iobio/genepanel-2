@@ -171,7 +171,7 @@ export default {
   watch: {},
   methods: {
     scrollTabs() {
-      if (this.tabs === 2) {
+      if (this.tabs === 3) {
         this.tabs = 0;
       } else {
         this.tabs = this.tabs + 1;
