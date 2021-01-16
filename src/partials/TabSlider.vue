@@ -163,9 +163,9 @@ export default {
     };
   },
   mounted() {
-    // setInterval(() => {
-    //   this.scrollTabs();
-    // }, 10000);
+    setInterval(() => {
+      this.scrollTabs();
+    }, 10000);
   },
   updated() {},
   watch: {},
