@@ -21,12 +21,17 @@
         </a>
         <AppsMenu></AppsMenu>
       </v-app-bar>
-      <div
+      <!-- <div
         dark
         style="height: 500px; background-color: #f9fbff; padding-top: 200px; padding-bottom:100px"
         class="pt-10 elevation-1"
+      > -->
+      <div
+        dark
+        style="height: 450px; background-color: #f9fbff; padding-top: 150px; padding-bottom:200px"
+        class="pt-5 elevation-1"
       >
-        <v-row align="center" justify="center" style="margin-top: 50px">
+        <v-row align="center" justify="center" style="margin-top: 30px">
           <v-col class="text-center" cols="12" style="color:#45688e">
             <h1
               class="display-2 font-weight-bold mb-4 mt-5"
@@ -259,7 +264,12 @@
     <div v-if="showLandingPage">
       <v-container>
         <h2 class="mt-5" style="font-weight: 500">How it works?</h2>
-        <v-stepper class="mt-5">
+        <tab-slider> </tab-slider>
+      </v-container>
+
+      <hr />
+      <v-container>
+        <!-- <v-stepper class="mt-5">
           <v-stepper-header>
             <v-stepper-step complete step="1">
               Enter a clinical note or select a condition
@@ -277,7 +287,7 @@
               App compiles a comprehensive gene list
             </v-stepper-step>
           </v-stepper-header>
-        </v-stepper>
+        </v-stepper> -->
       </v-container>
     </div>
   </div>
@@ -295,6 +305,7 @@ import { Typeahead } from "uiv";
 
 import DiseaseNamesData from "../data/DiseaseNames.json";
 import DiseaseNames from "../data/DiseaseNamesCleaned.json";
+import TabSlider from "../partials/TabSlider.vue";
 
 export default {
   name: "Main",
@@ -302,6 +313,7 @@ export default {
   components: {
     ...NewComponents,
     AppsMenu,
+    TabSlider,
   },
 
   data: () => ({
