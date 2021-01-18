@@ -29,14 +29,13 @@
                   </v-card-title>
                   <v-card-text>
                     <p>
-                      Duis lobortis massa imperdiet quam. Donec vitae orci sed
-                      dolor rutrum auctor. Vestibulum facilisis, purus nec
-                      pulvinar iaculis, ligula mi congue nunc, vitae euismod
-                      ligula urna in dolor. Praesent congue erat at massa.
+                      Get started by entering (pasting) a clinical note in the
+                      input or by selecting a condition/ phenotype from the
+                      autocomplete.
                     </p>
                     <p class="mb-0">
-                      Ut leo. Suspendisse potenti. Duis vel nibh at velit
-                      scelerisque suscipit. Fusce pharetra convallis urna.
+                      The tool "Phenotypr" extracts the phenotypes from the
+                      clinical note and presents the terms for selection.
                     </p>
                   </v-card-text>
                 </div>
@@ -55,18 +54,17 @@
                 </div>
                 <div class="col-md-5">
                   <v-card-title class="headline">
-                    Enter a clinical note or select a condition
+                    Review the terms and submit
                   </v-card-title>
                   <v-card-text>
                     <p>
-                      Duis lobortis massa imperdiet quam. Donec vitae orci sed
-                      dolor rutrum auctor. Vestibulum facilisis, purus nec
-                      pulvinar iaculis, ligula mi congue nunc, vitae euismod
-                      ligula urna in dolor. Praesent congue erat at massa.
+                      Genepanel.iobio utilizes resources such as (Genetic
+                      testing registry) GTR, Phenolyzer, and HPO for gene list
+                      curation.
                     </p>
                     <p class="mb-0">
-                      Ut leo. Suspendisse potenti. Duis vel nibh at velit
-                      scelerisque suscipit. Fusce pharetra convallis urna.
+                      Select and review the phenotypes to be searched in a
+                      single or multiple resources.
                     </p>
                   </v-card-text>
                 </div>
@@ -85,7 +83,7 @@
                 </div>
                 <div class="col-md-5">
                   <v-card-title class="headline">
-                    Enter a clinical note or select a condition
+                    App compiles a comprehensive gene list
                   </v-card-title>
                   <v-card-text>
                     <p>
@@ -115,7 +113,7 @@
                 </div>
                 <div class="col-md-5">
                   <v-card-title class="headline">
-                    Enter a clinical note or select a condition
+                    View gene info or export findings
                   </v-card-title>
                   <v-card-text>
                     <p>
