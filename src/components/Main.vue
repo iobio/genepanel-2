@@ -362,6 +362,25 @@ export default {
     TabSlider,
   },
 
+  props: {
+    paramDebug: null,
+    paramAnalysisId: null,
+    paramProjectId: null,
+    paramSampleId: null,
+    paramAnalysisId: null,
+    paramTokenType: null,
+    paramToken: null,
+    paramSource: null,
+    paramIobioSource: null,
+    paramGeneBatchSize: null,
+    paramClientApplicationId: null,
+    paramBuild: null,
+    paramGeneSetId: null,
+    paramGenes: null,
+    paramVariantSetId: null,
+    pquery: null,
+  },
+
   data: () => ({
     gtrGenes: [],
     summaryGeneList: [],
@@ -400,6 +419,8 @@ export default {
       this.showLandingPage = false;
     }
   },
+
+  mounted() {},
 
   watch: {
     launchedFromMosaic() {

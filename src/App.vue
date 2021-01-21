@@ -1,16 +1,17 @@
 <template>
   <v-app style="background-color: white">
     <v-content>
-      <Main/>
+      <!-- <Main/> -->
+      <router-view></router-view>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import Main from './components/Main';
+import Main from "./components/Main";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
     Main,
