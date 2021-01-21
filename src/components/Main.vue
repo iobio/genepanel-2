@@ -353,6 +353,8 @@ import DiseaseNamesData from "../data/DiseaseNames.json";
 import DiseaseNames from "../data/DiseaseNamesCleaned.json";
 import TabSlider from "../partials/TabSlider.vue";
 
+import MosaicSession from "../models/MosaicSession";
+
 export default {
   name: "Main",
 
@@ -378,7 +380,6 @@ export default {
     paramGeneSetId: null,
     paramGenes: null,
     paramVariantSetId: null,
-    pquery: null,
   },
 
   data: () => ({
@@ -408,9 +409,12 @@ export default {
     launchedFromMosaic: true,
     saveToMosaicDialog: false,
     radios: "radio-analysis",
+    mosaicSession: null,
     mosaic_analysis_name: "",
     mosaic_analysis_description: "",
     mosaic_genelist_name: "",
+    params: {},
+    caseSummary: {},
   }),
 
   created() {
@@ -420,7 +424,9 @@ export default {
     }
   },
 
-  mounted() {},
+  mounted() {
+    this.init();
+  },
 
   watch: {
     launchedFromMosaic() {
@@ -445,6 +451,64 @@ export default {
   },
 
   methods: {
+    init() {
+      let self = this;
+      if (
+        localStorage.getItem("hub-iobio-tkn") &&
+        localStorage.getItem("hub-iobio-tkn").length > 0 &&
+        self.paramSampleId &&
+        self.paramSource
+      ) {
+        self.params.sample_id = self.paramSampleId;
+        self.params.analysis_id = self.paramAnalysisId;
+        self.params.project_id = self.paramProjectId;
+        self.params.source = self.paramSource;
+        self.params.iobio_source = self.paramIobioSource;
+        self.params.client_application_id = self.paramClientApplicationId;
+        self.params.gene_set_id = self.paramGeneSetId;
+        self.params.genes = self.paramGenes;
+        self.params.variant_set_id = self.paramVariantSetId;
+
+        if (self.params.analysis_id == "undefined") {
+          self.params.analysis_id = null;
+        }
+        if (self.params.iobio_source == "undefined") {
+          self.params.iobio_source = null;
+        }
+
+        self.launchedFromMosaic = true;
+        self.mosaicSession = new MosaicSession();
+        self.mosaicSession
+          .promiseInit(
+            self.params.sample_id,
+            self.params.source,
+            true,
+            self.params.project_id,
+            self.params.client_application_id,
+            self.params.gene_set_id,
+            self.params.variant_set_id
+          )
+          .then((data) => {
+            self.modelInfos = data.modelInfos;
+            self.user = data.user;
+            self.geneSet = data.geneSet;
+
+            self.mosaicSession
+              .promiseGetProject(self.params.project_id)
+              .then(function(project) {
+                self.caseSummary = {};
+                self.caseSummary.name = project.name;
+                self.caseSummary.description =
+                  project.description && project.description.length > 0
+                    ? project.description
+                    : "A summary of the trio goes here....";
+              });
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    },
     summaryGenes(genes) {
       this.summaryGeneList = genes;
       this.analysis.payload.genesReport = this.summaryGeneList;
