@@ -258,10 +258,16 @@
                 color="blue darken-1"
                 text
                 v-if="radios === 'radio-analysis'"
+                @click="saveAnalysisToMosaic"
               >
                 Save analysis
               </v-btn>
-              <v-btn color="blue darken-1" text v-if="radios === 'radio-genes'">
+              <v-btn
+                color="blue darken-1"
+                text
+                v-if="radios === 'radio-genes'"
+                @click="exportGenes('saveGenelistToMosaic')"
+              >
                 Save gene list
               </v-btn>
 
@@ -555,6 +561,8 @@ export default {
         };
         const csvExporter = new ExportToCsv(options);
         csvExporter.generateCsv(csv_data);
+      } else if (this.exportAction === "saveGenelistToMosaic") {
+        this.saveGenelistToMosaic(obj.selected);
       }
 
       this.exportGenesFlag = obj.exportFlag;
@@ -584,6 +592,14 @@ export default {
         this.gtrResourceUsed = true;
       }
     },
+    saveGenelistToMosaic(genes) {
+      var analysis = {
+        genes: genes,
+        name: this.mosaic_genelist_name,
+      };
+      console.log("analysis", analysis);
+    },
+    saveAnalysisToMosaic() {},
   },
 };
 </script>
