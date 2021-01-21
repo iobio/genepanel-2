@@ -138,6 +138,7 @@
         </v-row>
       </div>
     </div>
+
     <div v-show="!showLandingPage">
       <v-app-bar color="primary" dark>
         <v-toolbar-title class="ml-5">
@@ -190,18 +191,21 @@
           </v-btn>
         </a>
         <AppsMenu></AppsMenu>
+        <v-btn @click="saveToMosaicDialog = true" color="primary">
+          ADD TO MOSAIC
+        </v-btn>
       </v-app-bar>
 
       <v-container>
+        <!-- Start newAnalysisDialog  -->
         <v-dialog v-model="newAnalysisDialog" persistent max-width="450">
           <v-card>
             <v-card-title class="headline"
               >Are you sure you want to clear all?</v-card-title
             >
-            <v-card-text class="mt-4"
-              >Clicking "Yes" will clear all results begin a new
-              analysis.</v-card-text
-            >
+            <v-card-text class="mt-4">
+              Clicking "Yes" will clear all results begin a new analysis.
+            </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click.native="forceReload"
@@ -216,6 +220,62 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <!-- End newAnalysisDialog -->
+
+        <!-- Start saveToMosaicDialog -->
+        <v-dialog v-model="saveToMosaicDialog" persistent max-width="650">
+          <v-card>
+            <v-card-title class="headline">Save data to Mosaic</v-card-title>
+            <v-card-text class="mt-4">
+              <v-radio-group v-model="radios" mandatory>
+                <v-radio label="Save analysis" value="radio-analysis"></v-radio>
+                <v-radio label="Save gene list" value="radio-genes"></v-radio>
+              </v-radio-group>
+              <div v-if="radios === 'radio-analysis'">
+                <h4>Analysis information</h4>
+                <br />
+                <v-text-field
+                  label="Name"
+                  v-model="mosaic_analysis_name"
+                ></v-text-field>
+                <v-text-field
+                  label="Description"
+                  v-model="mosaic_analysis_description"
+                ></v-text-field>
+              </div>
+              <div v-if="radios === 'radio-genes'">
+                <h4>Gene list information</h4>
+                <br />
+                <v-text-field
+                  label="Name"
+                  v-model="mosaic_genelist_name"
+                ></v-text-field>
+              </div>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue darken-1"
+                text
+                v-if="radios === 'radio-analysis'"
+              >
+                Save analysis
+              </v-btn>
+              <v-btn color="blue darken-1" text v-if="radios === 'radio-genes'">
+                Save gene list
+              </v-btn>
+
+              <v-btn
+                color="blue darken-1"
+                text
+                @click.native="saveToMosaicDialog = false"
+              >
+                Cancel
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <!-- End saveToMosaicDialog -->
       </v-container>
 
       <v-container>
@@ -268,27 +328,7 @@
       </v-container>
 
       <hr />
-      <v-container>
-        <!-- <v-stepper class="mt-5">
-          <v-stepper-header>
-            <v-stepper-step complete step="1">
-              Enter a clinical note or select a condition
-            </v-stepper-step>
-
-            <v-divider></v-divider>
-
-            <v-stepper-step complete step="2">
-              Review the terms and submit
-            </v-stepper-step>
-
-            <v-divider></v-divider>
-
-            <v-stepper-step complete step="3">
-              App compiles a comprehensive gene list
-            </v-stepper-step>
-          </v-stepper-header>
-        </v-stepper> -->
-      </v-container>
+      <v-container> </v-container>
     </div>
   </div>
 </template>
@@ -340,10 +380,27 @@ export default {
     gtrResourceUsed: false,
     hpoResourceUsed: false,
     PhenolyzerResourceUsed: false,
+    launchedFromMosaic: true,
+    saveToMosaicDialog: false,
+    radios: "radio-analysis",
+    mosaic_analysis_name: "",
+    mosaic_analysis_description: "",
+    mosaic_genelist_name: "",
   }),
 
   created() {
     this.analysis = analysisData;
+    if (this.launchedFromMosaic) {
+      this.showLandingPage = false;
+    }
+  },
+
+  watch: {
+    launchedFromMosaic() {
+      if (this.launchedFromMosaic) {
+        this.showLandingPage = false;
+      }
+    },
   },
 
   computed: {
