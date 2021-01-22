@@ -897,6 +897,34 @@ export default class MosaicSession {
     });
   }
 
+  promiseAddGeneSet(projectId, analysis) {
+    let self = this;
+    self
+      .addGeneSet(projectId, analysis)
+      .done((response) => {
+        console.log("response success!", response);
+      })
+      .fail((err) => {
+        console.log("error", err);
+      });
+  }
+
+  addGeneSet(projectId, analysis) {
+    let self = this;
+    console.log("analysis", analysis);
+    console.log(`${self.api}/projects/${projectId}/genes/sets`);
+    console.log("self api", self.api);
+    return $.ajax({
+      url: `${self.api}/projects/${projectId}/genes/sets`,
+      type: "POST",
+      data: self.stringifyAnalysis(analysis),
+      contentType: "application/json",
+      headers: {
+        Authorization: localStorage.getItem("hub-iobio-tkn"),
+      },
+    });
+  }
+
   stringifyAnalysis(analysisData) {
     var cache = [];
     let analysisString = JSON.stringify(analysisData, function(key, value) {

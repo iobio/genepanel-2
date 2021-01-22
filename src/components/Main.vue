@@ -678,10 +678,15 @@ export default {
       }
     },
     saveGenelistToMosaic(genes) {
+      console.log("params.project_id", this.params.project_id);
       var analysis = {
-        genes: genes,
         name: this.mosaic_genelist_name,
+        description: "Test Gene Description",
+        is_public_to_project: false,
+        gene_names: genes,
+        // gene_names: ["TCOF1"],
       };
+      this.mosaicSession.promiseAddGeneSet(this.params.project_id, analysis);
       console.log("analysis", analysis);
     },
     saveAnalysisToMosaic() {},
