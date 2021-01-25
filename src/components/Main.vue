@@ -337,6 +337,7 @@
           :gtrResourceUsed="gtrResourceUsed"
           :hpoResourceUsed="hpoResourceUsed"
           :PhenolyzerResourceUsed="PhenolyzerResourceUsed"
+          :mosaic_gene_set="mosaic_gene_set"
         >
         </GeneList>
       </v-container>
@@ -433,6 +434,7 @@ export default {
     caseSummary: {},
     snackbar: false,
     snackbar_text: "",
+    mosaic_gene_set: "",
   }),
 
   created() {
@@ -510,6 +512,7 @@ export default {
             self.modelInfos = data.modelInfos;
             self.user = data.user;
             self.geneSet = data.geneSet;
+            self.mosaic_gene_set = self.geneSet.genes.join();
 
             self.mosaicSession
               .promiseGetProject(self.params.project_id)
