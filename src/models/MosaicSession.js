@@ -899,14 +899,24 @@ export default class MosaicSession {
 
   promiseAddGeneSet(projectId, analysis) {
     let self = this;
-    self
-      .addGeneSet(projectId, analysis)
-      .done((response) => {
-        console.log("response success!", response);
-      })
-      .fail((err) => {
-        console.log("error", err);
-      });
+    return new Promise(function(resolve, reject) {
+      self
+        .addGeneSet(projectId, analysis)
+        .done((response) => {
+          resolve(response);
+        })
+        .fail((error) => {
+          reject("Error adding gene set " + error);
+        });
+    });
+    // self
+    //   .addGeneSet(projectId, analysis)
+    //   .done((response) => {
+    //     console.log("response success!", response);
+    //   })
+    //   .fail((err) => {
+    //     console.log("error", err);
+    //   });
   }
 
   addGeneSet(projectId, analysis) {

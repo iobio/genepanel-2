@@ -191,7 +191,7 @@
           </v-btn>
         </a>
         <AppsMenu></AppsMenu>
-        <v-btn @click="saveToMosaicDialog = true" color="primary">
+        <v-btn @click="saveToMosaicDialog = true" outlined style="color:white">
           ADD TO MOSAIC
         </v-btn>
       </v-app-bar>
@@ -250,6 +250,10 @@
                   label="Name"
                   v-model="mosaic_genelist_name"
                 ></v-text-field>
+                <v-text-field
+                  label="Descriptiom"
+                  v-model="mosaic_genelist_description"
+                ></v-text-field>
               </div>
             </v-card-text>
             <v-card-actions>
@@ -282,6 +286,17 @@
           </v-card>
         </v-dialog>
         <!-- End saveToMosaicDialog -->
+
+        <!-- Start snackbar  -->
+        <v-snackbar v-model="snackbar" top>
+          {{ snackbar_text }}
+          <template v-slot:action="{ attrs }">
+            <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
+        <!-- End snackbar  -->
       </v-container>
 
       <v-container>
@@ -413,8 +428,11 @@ export default {
     mosaic_analysis_name: "",
     mosaic_analysis_description: "",
     mosaic_genelist_name: "",
+    mosaic_genelist_description: "",
     params: {},
     caseSummary: {},
+    snackbar: false,
+    snackbar_text: "",
   }),
 
   created() {
@@ -681,13 +699,22 @@ export default {
       console.log("params.project_id", this.params.project_id);
       var analysis = {
         name: this.mosaic_genelist_name,
-        description: "Test Gene Description",
+        description: this.mosaic_genelist_description,
         is_public_to_project: false,
         gene_names: genes,
-        // gene_names: ["TCOF1"],
       };
-      this.mosaicSession.promiseAddGeneSet(this.params.project_id, analysis);
-      console.log("analysis", analysis);
+      this.mosaicSession
+        .promiseAddGeneSet(this.params.project_id, analysis)
+        .then((response) => {
+          this.snackbar_text = `Gene set added for project id ${this.params.project_id}`;
+          this.snackbar = true;
+          this.saveToMosaicDialog = false;
+        })
+        .catch((err) => {
+          this.snackbar_text = `Failed to add gene set for project id ${this.params.project_id}`;
+          this.snackbar = true;
+          this.saveToMosaicDialog = false;
+        });
     },
     saveAnalysisToMosaic() {},
   },
