@@ -251,7 +251,7 @@
                   v-model="mosaic_genelist_name"
                 ></v-text-field>
                 <v-text-field
-                  label="Descriptiom"
+                  label="Description"
                   v-model="mosaic_genelist_description"
                 ></v-text-field>
               </div>
@@ -422,7 +422,7 @@ export default {
     gtrResourceUsed: false,
     hpoResourceUsed: false,
     PhenolyzerResourceUsed: false,
-    launchedFromMosaic: true,
+    launchedFromMosaic: false,
     saveToMosaicDialog: false,
     radios: "radio-analysis",
     mosaicSession: null,

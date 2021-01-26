@@ -87,14 +87,14 @@
                   </v-card-title>
                   <v-card-text>
                     <p>
-                      Duis lobortis massa imperdiet quam. Donec vitae orci sed
-                      dolor rutrum auctor. Vestibulum facilisis, purus nec
-                      pulvinar iaculis, ligula mi congue nunc, vitae euismod
-                      ligula urna in dolor. Praesent congue erat at massa.
+                      App searches through the selected resources for the added
+                      phenotypes/ conditions and generates a comprehensive list
+                      of genes associated with these phenotypes.
                     </p>
                     <p class="mb-0">
-                      Ut leo. Suspendisse potenti. Duis vel nibh at velit
-                      scelerisque suscipit. Fusce pharetra convallis urna.
+                      You can also add your own genes to the compiled list.
+                      Genes found in multiple resources will be promoted to the
+                      top of the list.
                     </p>
                   </v-card-text>
                 </div>
@@ -117,14 +117,14 @@
                   </v-card-title>
                   <v-card-text>
                     <p>
-                      Duis lobortis massa imperdiet quam. Donec vitae orci sed
-                      dolor rutrum auctor. Vestibulum facilisis, purus nec
-                      pulvinar iaculis, ligula mi congue nunc, vitae euismod
-                      ligula urna in dolor. Praesent congue erat at massa.
+                      Top 20 genes are selected by default or you can make
+                      custom selection. You can then export these genes to a CSV
+                      file with a detailed report or simply copy them to
+                      clipboard
                     </p>
                     <p class="mb-0">
-                      Ut leo. Suspendisse potenti. Duis vel nibh at velit
-                      scelerisque suscipit. Fusce pharetra convallis urna.
+                      You can also click on a gene to view its summary,
+                      position, and location.
                     </p>
                   </v-card-text>
                 </div>
