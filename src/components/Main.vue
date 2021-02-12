@@ -587,7 +587,7 @@ export default {
     },
     extract(type) {
       if (type === "typeahead") {
-        if (this.search.DiseaseName !== undefined) {
+        if (this.search && this.search.DiseaseName !== undefined) {
           this.textNotesLandingPage = this.search.DiseaseName;
         } else {
           this.textNotesLandingPage = this.textNotes;
