@@ -191,7 +191,12 @@
           </v-btn>
         </a>
         <AppsMenu></AppsMenu>
-        <v-btn @click="saveToMosaicDialog = true" outlined style="color:white">
+        <v-btn
+          v-if="launchedFromMosaic"
+          @click="saveToMosaicDialog = true"
+          outlined
+          style="color:white"
+        >
           ADD TO MOSAIC
         </v-btn>
       </v-app-bar>
