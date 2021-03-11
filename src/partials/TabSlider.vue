@@ -1,18 +1,15 @@
 <template>
   <div>
-    <!-- <v-card> -->
-    <!-- <v-card-text> -->
     <v-tabs v-model="tabs" fixed-tabs centered class="pa-2">
       <v-tab
         v-for="(item, idx) in titles"
         :key="idx"
         style="text-transform: none"
+        @click="visitTab(idx)"
       >
         {{ item.data }}
       </v-tab>
     </v-tabs>
-    <!-- </v-card-text> -->
-    <!-- </v-card> -->
     <br />
     <v-tabs-items v-model="tabs">
       <v-tab-item>
@@ -144,6 +141,7 @@ export default {
   data() {
     return {
       tabs: 0,
+      timingInterval: null,
       titles: [
         {
           data: "Enter a clinical note or select a condition",
@@ -161,7 +159,7 @@ export default {
     };
   },
   mounted() {
-    setInterval(() => {
+    this.timingInterval = setInterval(() => {
       this.scrollTabs();
     }, 10000);
   },
@@ -174,6 +172,14 @@ export default {
       } else {
         this.tabs = this.tabs + 1;
       }
+    },
+    visitTab(idx) {
+      clearInterval(this.timingInterval);
+      setTimeout(() => {
+        this.timingInterval = setInterval(() => {
+          this.scrollTabs();
+        }, 10000);
+      }, 5000);
     },
   },
 };
