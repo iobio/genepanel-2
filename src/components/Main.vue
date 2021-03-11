@@ -536,7 +536,14 @@ export default {
       }
     },
     summaryGenes(genes) {
-      this.summaryGeneList = genes;
+      let res = [];
+      genes.map((gene) => {
+        if (!this.deletedGenesList.includes(gene.name)) {
+          res.push(gene);
+        }
+      });
+
+      this.summaryGeneList = res;
       this.analysis.payload.genesReport = this.summaryGeneList;
     },
     saveSearchedPhenotypes(phenotypes) {
@@ -544,6 +551,11 @@ export default {
       this.analysis.payload.phenotypes = phenotypes;
     },
     importedGenes(genes) {
+      if (this.deletedGenesList.length) {
+        this.deletedGenesList = this.deletedGenesList.filter(
+          (item) => !genes.includes(item)
+        );
+      }
       this.AddedGenes = genes;
     },
     PhenolyzerGeneList(genes) {},
@@ -567,6 +579,17 @@ export default {
       this.updateGeneListsOfEachTool();
     },
     updateGeneListsOfEachTool() {
+      //GTR
+      let gtrCompleteList = this.analysis.payload.gtrFullList;
+      let gtr_res = [];
+      gtrCompleteList.map((gene) => {
+        if (!this.deletedGenesList.includes(gene.name)) {
+          gtr_res.push(gene);
+        }
+      });
+      this.analysis.payload.gtrFullList = gtr_res;
+
+      //Phenolyzer
       let phenolyzerCompleteList = this.analysis.payload.phenolyzerFullList;
       let phenolyzer_res = [];
       phenolyzerCompleteList.map((gene) => {
@@ -575,6 +598,16 @@ export default {
         }
       });
       this.analysis.payload.phenolyzerFullList = phenolyzer_res;
+
+      //HPO
+      let hpoCompleteList = this.analysis.payload.hpoFullList;
+      let hpo_res = [];
+      hpoCompleteList.map((gene) => {
+        if (!this.deletedGenesList.includes(gene.name)) {
+          hpo_res.push(gene);
+        }
+      });
+      this.analysis.payload.hpoFullList = hpo_res;
     },
     add_to_gene_set(genes) {
       this.selectedGenesForGeneSet = genes;
