@@ -128,6 +128,15 @@
                   >
                     Dejerine sottas disease
                   </v-chip>
+                  <v-chip
+                    class="ma-2"
+                    color="primary"
+                    outlined
+                    small
+                    @click="textNotes = 'HP:0000763'"
+                  >
+                    HP:0000763
+                  </v-chip>
                 </div>
               </div>
             </v-container>
