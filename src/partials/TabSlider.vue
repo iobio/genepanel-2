@@ -16,7 +16,7 @@
         <v-card flat>
           <v-card-text>
             <div class=" ">
-              <div class="row">
+              <div class="row" style="min-height: 400px">
                 <div class="col-md-7">
                   <img width="90%" src="./genepanel_artboard_1.png" alt="" />
                 </div>
@@ -26,13 +26,13 @@
                   </v-card-title>
                   <v-card-text>
                     <p>
-                      Get started by entering (pasting) a clinical note in the
-                      input or by selecting a condition/ phenotype from the
-                      autocomplete.
+                      Get started by entering a clinical note in the input or by
+                      selecting a condition/ phenotype from the autocomplete.
                     </p>
                     <p class="mb-0">
-                      The tool "Phenotypr" extracts the phenotypes from the
-                      clinical note and presents the terms for selection.
+                      The tool "Phenotypr" extracts the phenotypes and HPO terms
+                      from the clinical note and presents the terms for
+                      selection.
                     </p>
                   </v-card-text>
                 </div>
@@ -45,7 +45,7 @@
         <v-card flat>
           <v-card-text>
             <div class=" ">
-              <div class="row">
+              <div class="row" style="min-height: 400px">
                 <div class="col-md-7">
                   <img width="100%" src="./genepanel_artboard_2.png" alt="" />
                 </div>
@@ -55,9 +55,9 @@
                   </v-card-title>
                   <v-card-text>
                     <p>
-                      Genepanel.iobio utilizes resources such as (Genetic
-                      testing registry) GTR, Phenolyzer, and HPO for gene list
-                      curation.
+                      Genepanel.iobio utilizes resources such as Genetic testing
+                      registry (GTR), Phenolyzer, ClinPhen, and The Human
+                      Phenotype Ontology for gene list curation.
                     </p>
                     <p class="mb-0">
                       Select and review the phenotypes to be searched in a
@@ -74,7 +74,7 @@
         <v-card flat>
           <v-card-text>
             <div class=" ">
-              <div class="row">
+              <div class="row" style="min-height: 400px">
                 <div class="col-md-7">
                   <img width="90%" src="./genepanel_artboard_3.png" alt="" />
                 </div>
@@ -90,8 +90,8 @@
                     </p>
                     <p class="mb-0">
                       You can also add your own genes to the compiled list.
-                      Genes found in multiple resources will be promoted to the
-                      top of the list.
+                      Genes found in multiple resources are promoted to the top
+                      of the list.
                     </p>
                   </v-card-text>
                 </div>
@@ -104,7 +104,7 @@
         <v-card flat>
           <v-card-text>
             <div class=" ">
-              <div class="row">
+              <div class="row" style="min-height: 400px">
                 <div class="col-md-7">
                   <img width="90%" src="./genepanel_artboard_4.png" alt="" />
                 </div>
@@ -114,14 +114,14 @@
                   </v-card-title>
                   <v-card-text>
                     <p>
-                      Top 20 genes are selected by default or you can make
+                      Top 20 genes are selected by default but you can also make
                       custom selection. You can then export these genes to a CSV
                       file with a detailed report or simply copy them to
                       clipboard
                     </p>
                     <p class="mb-0">
                       You can also click on a gene to view its summary,
-                      position, and location.
+                      position, location, and other details.
                     </p>
                   </v-card-text>
                 </div>
