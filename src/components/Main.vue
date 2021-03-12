@@ -361,8 +361,35 @@
       </v-container>
     </div>
 
-    <div v-if="showLandingPage">
+    <div
+      v-if="showLandingPage"
+      style="background-color: rgb(250 250 250 / 35%); box-shadow: 0 2px 1px -1px rgba(0,0,0,0),0 1px 1px 0 rgba(0,0,0,.1),0 1px 3px 0 rgba(0,0,0,.0)!important"
+    >
       <v-container>
+        <div class="container text-center">
+          <div class="row">
+            <div class="col-md-4">
+              <span>HPO terms</span>
+              <br />
+              <h2>9000+</h2>
+            </div>
+            <div class="col-md-4">
+              Conditions and Phenotypes
+              <br />
+              <h2>25000+</h2>
+            </div>
+            <div class="col-md-4">
+              Known genes
+              <br />
+              <h2>100,000+</h2>
+            </div>
+          </div>
+        </div>
+      </v-container>
+    </div>
+
+    <div v-if="showLandingPage">
+      <v-container class="mt-2">
         <h2 class="mt-5" style="font-weight: 500">How it works?</h2>
         <tab-slider> </tab-slider>
       </v-container>
