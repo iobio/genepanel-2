@@ -204,15 +204,18 @@
             >
             <v-card-text class="mt-4">
               Clicking "Yes" will clear all results begin a new analysis.
+              <br />
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click.native="forceReload"
+              <v-btn color="primary" small tile @click.native="forceReload"
                 >Yes</v-btn
               >
               <v-btn
-                color="blue darken-1"
-                text
+                color="primary"
+                tile
+                small
+                outlined
                 @click.native="newAnalysisDialog = false"
                 >No</v-btn
               >
@@ -224,12 +227,14 @@
         <!-- Start saveToMosaicDialog -->
         <v-dialog v-model="saveToMosaicDialog" persistent max-width="650">
           <v-card>
-            <v-card-title class="headline">Save data to Mosaic</v-card-title>
+            <v-card-title class="headline"
+              >Save Gene List to Mosaic</v-card-title
+            >
             <v-card-text class="mt-4">
-              <v-radio-group v-model="radios" mandatory>
+              <!-- <v-radio-group v-model="radios" mandatory>
                 <v-radio label="Save analysis" value="radio-analysis"></v-radio>
                 <v-radio label="Save gene list" value="radio-genes"></v-radio>
-              </v-radio-group>
+              </v-radio-group> -->
               <div v-if="radios === 'radio-analysis'">
                 <h4>Analysis information</h4>
                 <br />
@@ -243,8 +248,8 @@
                 ></v-text-field>
               </div>
               <div v-if="radios === 'radio-genes'">
-                <h4>Gene list information</h4>
-                <br />
+                <h4>Gene list information:</h4>
+                <!-- <br /> -->
                 <v-text-field
                   label="Name"
                   v-model="mosaic_genelist_name"
@@ -258,26 +263,30 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
-                color="blue darken-1"
-                text
+                color="primary"
+                tile
                 v-if="radios === 'radio-analysis'"
                 @click="saveAnalysisToMosaic"
+                style="letter-spacing: normal"
               >
                 Save analysis
               </v-btn>
               <v-btn
-                color="blue darken-1"
-                text
+                color="primary"
+                tile
                 v-if="radios === 'radio-genes'"
                 @click="exportGenes('saveGenelistToMosaic')"
+                style="letter-spacing: normal"
               >
                 Save gene list
               </v-btn>
 
               <v-btn
-                color="blue darken-1"
-                text
+                color="primary"
+                tile
+                outlined
                 @click.native="saveToMosaicDialog = false"
+                style="letter-spacing: normal"
               >
                 Cancel
               </v-btn>
@@ -425,7 +434,7 @@ export default {
     PhenolyzerResourceUsed: false,
     launchedFromMosaic: false,
     saveToMosaicDialog: false,
-    radios: "radio-analysis",
+    radios: "radio-genes",
     mosaicSession: null,
     mosaic_analysis_name: "",
     mosaic_analysis_description: "",
@@ -743,7 +752,7 @@ export default {
       this.mosaicSession
         .promiseAddGeneSet(this.params.project_id, analysis)
         .then((response) => {
-          this.snackbar_text = `Gene set added for project id ${this.params.project_id}`;
+          this.snackbar_text = `Gene set saved to Mosaic`;
           this.snackbar = true;
           this.saveToMosaicDialog = false;
         })
