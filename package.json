@@ -17,7 +17,7 @@
     "core-js": "^3.6.5",
     "export-to-csv": "^0.2.1",
     "file-saver": "^2.0.5",
-    "iobio-phenotype-extractor-vue": "^5.4.0",
+    "iobio-phenotype-extractor-vue": "^5.5.1",
     "jquery": "^3.5.1",
     "uiv": "^1.2.1",
     "v-clipboard": "^2.2.3",

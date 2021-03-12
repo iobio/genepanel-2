@@ -167,7 +167,7 @@
             </v-list-item>
             <v-list-item @click="exportGenes('exportToFile')">
               <v-list-item-title
-                ><v-icon>input</v-icon>&nbsp; &nbsp;Export GTR genes to
+                ><v-icon>input</v-icon>&nbsp; &nbsp;Export genes to
                 file</v-list-item-title
               >
             </v-list-item>
@@ -355,6 +355,7 @@
           :hpoResourceUsed="hpoResourceUsed"
           :PhenolyzerResourceUsed="PhenolyzerResourceUsed"
           :mosaic_gene_set="mosaic_gene_set"
+          :launchedFromGenePanel="launchedFromGenePanel"
         >
         </GeneList>
       </v-container>
@@ -454,6 +455,7 @@ export default {
     snackbar: false,
     snackbar_text: "",
     mosaic_gene_set: "",
+    launchedFromGenePanel: true,
   }),
 
   created() {
@@ -561,7 +563,6 @@ export default {
       this.analysis.payload.genesReport = this.summaryGeneList;
     },
     saveSearchedPhenotypes(phenotypes) {
-      console.log("phenotypes", phenotypes);
       this.analysis.payload.phenotypes = phenotypes;
     },
     importedGenes(genes) {
@@ -751,7 +752,7 @@ export default {
       }
     },
     saveGenelistToMosaic(genes) {
-      console.log("params.project_id", this.params.project_id);
+      // console.log("params.project_id", this.params.project_id);
       var analysis = {
         name: this.mosaic_genelist_name,
         description: this.mosaic_genelist_description,
