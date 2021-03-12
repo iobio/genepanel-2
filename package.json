@@ -6,13 +6,15 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:e2e": "vue-cli-service test:e2e",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "deploydev": "sh deploy_dev.sh"
   },
   "dependencies": {
     "core-js": "^3.6.5",
     "export-to-csv": "^0.2.1",
     "file-saver": "^2.0.5",
-    "iobio-phenotype-extractor-vue": "^4.3.0",
+    "iobio-phenotype-extractor-vue": "^5.4.0",
+    "jquery": "^3.5.1",
     "uiv": "^1.2.1",
     "v-clipboard": "^2.2.3",
     "vue": "^2.6.11",

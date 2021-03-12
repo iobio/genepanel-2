@@ -5,6 +5,9 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import VueParticles from "vue-particles";
 import Clipboard from "v-clipboard";
+import jQuery from "jquery";
+global.jQuery = jQuery;
+global.$ = jQuery;
 
 Vue.use(Clipboard);
 

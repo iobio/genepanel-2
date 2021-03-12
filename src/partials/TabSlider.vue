@@ -1,18 +1,15 @@
 <template>
   <div>
-    <!-- <v-card> -->
-    <!-- <v-card-text> -->
     <v-tabs v-model="tabs" fixed-tabs centered class="pa-2">
       <v-tab
         v-for="(item, idx) in titles"
         :key="idx"
         style="text-transform: none"
+        @click="visitTab(idx)"
       >
         {{ item.data }}
       </v-tab>
     </v-tabs>
-    <!-- </v-card-text> -->
-    <!-- </v-card> -->
     <br />
     <v-tabs-items v-model="tabs">
       <v-tab-item>
@@ -87,14 +84,14 @@
                   </v-card-title>
                   <v-card-text>
                     <p>
-                      Duis lobortis massa imperdiet quam. Donec vitae orci sed
-                      dolor rutrum auctor. Vestibulum facilisis, purus nec
-                      pulvinar iaculis, ligula mi congue nunc, vitae euismod
-                      ligula urna in dolor. Praesent congue erat at massa.
+                      App searches through the selected resources for the added
+                      phenotypes/ conditions and generates a comprehensive list
+                      of genes associated with these phenotypes.
                     </p>
                     <p class="mb-0">
-                      Ut leo. Suspendisse potenti. Duis vel nibh at velit
-                      scelerisque suscipit. Fusce pharetra convallis urna.
+                      You can also add your own genes to the compiled list.
+                      Genes found in multiple resources will be promoted to the
+                      top of the list.
                     </p>
                   </v-card-text>
                 </div>
@@ -117,14 +114,14 @@
                   </v-card-title>
                   <v-card-text>
                     <p>
-                      Duis lobortis massa imperdiet quam. Donec vitae orci sed
-                      dolor rutrum auctor. Vestibulum facilisis, purus nec
-                      pulvinar iaculis, ligula mi congue nunc, vitae euismod
-                      ligula urna in dolor. Praesent congue erat at massa.
+                      Top 20 genes are selected by default or you can make
+                      custom selection. You can then export these genes to a CSV
+                      file with a detailed report or simply copy them to
+                      clipboard
                     </p>
                     <p class="mb-0">
-                      Ut leo. Suspendisse potenti. Duis vel nibh at velit
-                      scelerisque suscipit. Fusce pharetra convallis urna.
+                      You can also click on a gene to view its summary,
+                      position, and location.
                     </p>
                   </v-card-text>
                 </div>
@@ -144,6 +141,7 @@ export default {
   data() {
     return {
       tabs: 0,
+      timingInterval: null,
       titles: [
         {
           data: "Enter a clinical note or select a condition",
@@ -161,7 +159,7 @@ export default {
     };
   },
   mounted() {
-    setInterval(() => {
+    this.timingInterval = setInterval(() => {
       this.scrollTabs();
     }, 10000);
   },
@@ -174,6 +172,14 @@ export default {
       } else {
         this.tabs = this.tabs + 1;
       }
+    },
+    visitTab(idx) {
+      clearInterval(this.timingInterval);
+      setTimeout(() => {
+        this.timingInterval = setInterval(() => {
+          this.scrollTabs();
+        }, 10000);
+      }, 5000);
     },
   },
 };

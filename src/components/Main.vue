@@ -6,10 +6,7 @@
           <strong>genepanel.iobio</strong>
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn text>
-          <v-icon>help</v-icon>
-          <strong class="ml-1">HELP</strong>
-        </v-btn>
+        <help-menu></help-menu>
         <a
           href="https://bmcmedgenomics.biomedcentral.com/articles/10.1186/s12920-019-0641-1"
           target="_blank"
@@ -138,6 +135,7 @@
         </v-row>
       </div>
     </div>
+
     <div v-show="!showLandingPage">
       <v-app-bar color="primary" dark>
         <v-toolbar-title class="ml-5">
@@ -176,10 +174,7 @@
           <v-icon>autorenew</v-icon>
           <strong class="ml-1">CLEAR ALL</strong>
         </v-btn>
-        <v-btn text>
-          <v-icon>help</v-icon>
-          <strong class="ml-1">HELP</strong>
-        </v-btn>
+        <help-menu></help-menu>
         <a
           href="https://bmcmedgenomics.biomedcentral.com/articles/10.1186/s12920-019-0641-1"
           target="_blank"
@@ -190,18 +185,26 @@
           </v-btn>
         </a>
         <AppsMenu></AppsMenu>
+        <v-btn
+          v-if="launchedFromMosaic"
+          @click="saveToMosaicDialog = true"
+          outlined
+          style="color:white"
+        >
+          ADD TO MOSAIC
+        </v-btn>
       </v-app-bar>
 
       <v-container>
+        <!-- Start newAnalysisDialog  -->
         <v-dialog v-model="newAnalysisDialog" persistent max-width="450">
           <v-card>
             <v-card-title class="headline"
               >Are you sure you want to clear all?</v-card-title
             >
-            <v-card-text class="mt-4"
-              >Clicking "Yes" will clear all results begin a new
-              analysis.</v-card-text
-            >
+            <v-card-text class="mt-4">
+              Clicking "Yes" will clear all results begin a new analysis.
+            </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click.native="forceReload"
@@ -216,6 +219,83 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <!-- End newAnalysisDialog -->
+
+        <!-- Start saveToMosaicDialog -->
+        <v-dialog v-model="saveToMosaicDialog" persistent max-width="650">
+          <v-card>
+            <v-card-title class="headline">Save data to Mosaic</v-card-title>
+            <v-card-text class="mt-4">
+              <v-radio-group v-model="radios" mandatory>
+                <v-radio label="Save analysis" value="radio-analysis"></v-radio>
+                <v-radio label="Save gene list" value="radio-genes"></v-radio>
+              </v-radio-group>
+              <div v-if="radios === 'radio-analysis'">
+                <h4>Analysis information</h4>
+                <br />
+                <v-text-field
+                  label="Name"
+                  v-model="mosaic_analysis_name"
+                ></v-text-field>
+                <v-text-field
+                  label="Description"
+                  v-model="mosaic_analysis_description"
+                ></v-text-field>
+              </div>
+              <div v-if="radios === 'radio-genes'">
+                <h4>Gene list information</h4>
+                <br />
+                <v-text-field
+                  label="Name"
+                  v-model="mosaic_genelist_name"
+                ></v-text-field>
+                <v-text-field
+                  label="Description"
+                  v-model="mosaic_genelist_description"
+                ></v-text-field>
+              </div>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue darken-1"
+                text
+                v-if="radios === 'radio-analysis'"
+                @click="saveAnalysisToMosaic"
+              >
+                Save analysis
+              </v-btn>
+              <v-btn
+                color="blue darken-1"
+                text
+                v-if="radios === 'radio-genes'"
+                @click="exportGenes('saveGenelistToMosaic')"
+              >
+                Save gene list
+              </v-btn>
+
+              <v-btn
+                color="blue darken-1"
+                text
+                @click.native="saveToMosaicDialog = false"
+              >
+                Cancel
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <!-- End saveToMosaicDialog -->
+
+        <!-- Start snackbar  -->
+        <v-snackbar v-model="snackbar" top>
+          {{ snackbar_text }}
+          <template v-slot:action="{ attrs }">
+            <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
+        <!-- End snackbar  -->
       </v-container>
 
       <v-container>
@@ -256,6 +336,7 @@
           :gtrResourceUsed="gtrResourceUsed"
           :hpoResourceUsed="hpoResourceUsed"
           :PhenolyzerResourceUsed="PhenolyzerResourceUsed"
+          :mosaic_gene_set="mosaic_gene_set"
         >
         </GeneList>
       </v-container>
@@ -268,33 +349,14 @@
       </v-container>
 
       <hr />
-      <v-container>
-        <!-- <v-stepper class="mt-5">
-          <v-stepper-header>
-            <v-stepper-step complete step="1">
-              Enter a clinical note or select a condition
-            </v-stepper-step>
-
-            <v-divider></v-divider>
-
-            <v-stepper-step complete step="2">
-              Review the terms and submit
-            </v-stepper-step>
-
-            <v-divider></v-divider>
-
-            <v-stepper-step complete step="3">
-              App compiles a comprehensive gene list
-            </v-stepper-step>
-          </v-stepper-header>
-        </v-stepper> -->
-      </v-container>
+      <v-container> </v-container>
     </div>
   </div>
 </template>
 
 <script>
 import AppsMenu from "../partials/AppsMenu";
+import HelpMenu from "../partials/HelpMenu";
 
 import NewComponents from "iobio-phenotype-extractor-vue";
 import analysisData from "../data/analysis.json";
@@ -307,13 +369,34 @@ import DiseaseNamesData from "../data/DiseaseNames.json";
 import DiseaseNames from "../data/DiseaseNamesCleaned.json";
 import TabSlider from "../partials/TabSlider.vue";
 
+import MosaicSession from "../models/MosaicSession";
+
 export default {
   name: "Main",
 
   components: {
+    HelpMenu,
     ...NewComponents,
     AppsMenu,
     TabSlider,
+  },
+
+  props: {
+    paramDebug: null,
+    paramAnalysisId: null,
+    paramProjectId: null,
+    paramSampleId: null,
+    paramAnalysisId: null,
+    paramTokenType: null,
+    paramToken: null,
+    paramSource: null,
+    paramIobioSource: null,
+    paramGeneBatchSize: null,
+    paramClientApplicationId: null,
+    paramBuild: null,
+    paramGeneSetId: null,
+    paramGenes: null,
+    paramVariantSetId: null,
   },
 
   data: () => ({
@@ -340,10 +423,38 @@ export default {
     gtrResourceUsed: false,
     hpoResourceUsed: false,
     PhenolyzerResourceUsed: false,
+    launchedFromMosaic: false,
+    saveToMosaicDialog: false,
+    radios: "radio-analysis",
+    mosaicSession: null,
+    mosaic_analysis_name: "",
+    mosaic_analysis_description: "",
+    mosaic_genelist_name: "",
+    mosaic_genelist_description: "",
+    params: {},
+    caseSummary: {},
+    snackbar: false,
+    snackbar_text: "",
+    mosaic_gene_set: "",
   }),
 
   created() {
     this.analysis = analysisData;
+    if (this.launchedFromMosaic) {
+      this.showLandingPage = false;
+    }
+  },
+
+  mounted() {
+    this.init();
+  },
+
+  watch: {
+    launchedFromMosaic() {
+      if (this.launchedFromMosaic) {
+        this.showLandingPage = false;
+      }
+    },
   },
 
   computed: {
@@ -361,8 +472,74 @@ export default {
   },
 
   methods: {
+    init() {
+      let self = this;
+      if (
+        localStorage.getItem("hub-iobio-tkn") &&
+        localStorage.getItem("hub-iobio-tkn").length > 0 &&
+        self.paramSampleId &&
+        self.paramSource
+      ) {
+        self.params.sample_id = self.paramSampleId;
+        self.params.analysis_id = self.paramAnalysisId;
+        self.params.project_id = self.paramProjectId;
+        self.params.source = self.paramSource;
+        self.params.iobio_source = self.paramIobioSource;
+        self.params.client_application_id = self.paramClientApplicationId;
+        self.params.gene_set_id = self.paramGeneSetId;
+        self.params.genes = self.paramGenes;
+        self.params.variant_set_id = self.paramVariantSetId;
+
+        if (self.params.analysis_id == "undefined") {
+          self.params.analysis_id = null;
+        }
+        if (self.params.iobio_source == "undefined") {
+          self.params.iobio_source = null;
+        }
+
+        self.launchedFromMosaic = true;
+        self.mosaicSession = new MosaicSession();
+        self.mosaicSession
+          .promiseInit(
+            self.params.sample_id,
+            self.params.source,
+            true,
+            self.params.project_id,
+            self.params.client_application_id,
+            self.params.gene_set_id,
+            self.params.variant_set_id
+          )
+          .then((data) => {
+            self.modelInfos = data.modelInfos;
+            self.user = data.user;
+            self.geneSet = data.geneSet;
+            self.mosaic_gene_set = self.geneSet.genes.join();
+
+            self.mosaicSession
+              .promiseGetProject(self.params.project_id)
+              .then(function(project) {
+                self.caseSummary = {};
+                self.caseSummary.name = project.name;
+                self.caseSummary.description =
+                  project.description && project.description.length > 0
+                    ? project.description
+                    : "A summary of the trio goes here....";
+              });
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    },
     summaryGenes(genes) {
-      this.summaryGeneList = genes;
+      let res = [];
+      genes.map((gene) => {
+        if (!this.deletedGenesList.includes(gene.name)) {
+          res.push(gene);
+        }
+      });
+
+      this.summaryGeneList = res;
       this.analysis.payload.genesReport = this.summaryGeneList;
     },
     saveSearchedPhenotypes(phenotypes) {
@@ -370,6 +547,11 @@ export default {
       this.analysis.payload.phenotypes = phenotypes;
     },
     importedGenes(genes) {
+      if (this.deletedGenesList.length) {
+        this.deletedGenesList = this.deletedGenesList.filter(
+          (item) => !genes.includes(item)
+        );
+      }
       this.AddedGenes = genes;
     },
     PhenolyzerGeneList(genes) {},
@@ -393,6 +575,17 @@ export default {
       this.updateGeneListsOfEachTool();
     },
     updateGeneListsOfEachTool() {
+      //GTR
+      let gtrCompleteList = this.analysis.payload.gtrFullList;
+      let gtr_res = [];
+      gtrCompleteList.map((gene) => {
+        if (!this.deletedGenesList.includes(gene.name)) {
+          gtr_res.push(gene);
+        }
+      });
+      this.analysis.payload.gtrFullList = gtr_res;
+
+      //Phenolyzer
       let phenolyzerCompleteList = this.analysis.payload.phenolyzerFullList;
       let phenolyzer_res = [];
       phenolyzerCompleteList.map((gene) => {
@@ -401,6 +594,16 @@ export default {
         }
       });
       this.analysis.payload.phenolyzerFullList = phenolyzer_res;
+
+      //HPO
+      let hpoCompleteList = this.analysis.payload.hpoFullList;
+      let hpo_res = [];
+      hpoCompleteList.map((gene) => {
+        if (!this.deletedGenesList.includes(gene.name)) {
+          hpo_res.push(gene);
+        }
+      });
+      this.analysis.payload.hpoFullList = hpo_res;
     },
     add_to_gene_set(genes) {
       this.selectedGenesForGeneSet = genes;
@@ -413,7 +616,7 @@ export default {
     },
     extract(type) {
       if (type === "typeahead") {
-        if (this.search.DiseaseName !== undefined) {
+        if (this.search && this.search.DiseaseName !== undefined) {
           this.textNotesLandingPage = this.search.DiseaseName;
         } else {
           this.textNotesLandingPage = this.textNotes;
@@ -498,6 +701,8 @@ export default {
         };
         const csvExporter = new ExportToCsv(options);
         csvExporter.generateCsv(csv_data);
+      } else if (this.exportAction === "saveGenelistToMosaic") {
+        this.saveGenelistToMosaic(obj.selected);
       }
 
       this.exportGenesFlag = obj.exportFlag;
@@ -527,6 +732,28 @@ export default {
         this.gtrResourceUsed = true;
       }
     },
+    saveGenelistToMosaic(genes) {
+      console.log("params.project_id", this.params.project_id);
+      var analysis = {
+        name: this.mosaic_genelist_name,
+        description: this.mosaic_genelist_description,
+        is_public_to_project: false,
+        gene_names: genes,
+      };
+      this.mosaicSession
+        .promiseAddGeneSet(this.params.project_id, analysis)
+        .then((response) => {
+          this.snackbar_text = `Gene set added for project id ${this.params.project_id}`;
+          this.snackbar = true;
+          this.saveToMosaicDialog = false;
+        })
+        .catch((err) => {
+          this.snackbar_text = `Failed to add gene set for project id ${this.params.project_id}`;
+          this.snackbar = true;
+          this.saveToMosaicDialog = false;
+        });
+    },
+    saveAnalysisToMosaic() {},
   },
 };
 </script>
