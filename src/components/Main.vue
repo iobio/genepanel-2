@@ -6,10 +6,7 @@
           <strong>genepanel.iobio</strong>
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn text>
-          <v-icon>help</v-icon>
-          <strong class="ml-1">HELP</strong>
-        </v-btn>
+        <help-menu></help-menu>
         <a
           href="https://bmcmedgenomics.biomedcentral.com/articles/10.1186/s12920-019-0641-1"
           target="_blank"
@@ -177,10 +174,7 @@
           <v-icon>autorenew</v-icon>
           <strong class="ml-1">CLEAR ALL</strong>
         </v-btn>
-        <v-btn text>
-          <v-icon>help</v-icon>
-          <strong class="ml-1">HELP</strong>
-        </v-btn>
+        <help-menu></help-menu>
         <a
           href="https://bmcmedgenomics.biomedcentral.com/articles/10.1186/s12920-019-0641-1"
           target="_blank"
@@ -362,6 +356,7 @@
 
 <script>
 import AppsMenu from "../partials/AppsMenu";
+import HelpMenu from "../partials/HelpMenu";
 
 import NewComponents from "iobio-phenotype-extractor-vue";
 import analysisData from "../data/analysis.json";
@@ -380,6 +375,7 @@ export default {
   name: "Main",
 
   components: {
+    HelpMenu,
     ...NewComponents,
     AppsMenu,
     TabSlider,
