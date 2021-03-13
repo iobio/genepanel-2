@@ -368,9 +368,9 @@ export default class MosaicSession {
   promiseGetSampleInfo(project_id, sample_id, isPedigree) {
     let self = this;
     if (isPedigree) {
-      return self.promiseGetPedigreeForSample(project_id, sample_id);
+      // return self.promiseGetPedigreeForSample(project_id, sample_id);
     } else {
-      return self.promiseGetSample(project_id, sample_id, "proband");
+      // return self.promiseGetSample(project_id, sample_id, "proband");
     }
   }
 
@@ -705,7 +705,6 @@ export default class MosaicSession {
       self
         .getVariantSet(projectId, variantSetId)
         .done((response) => {
-          console.log("resp", response);
           resolve(response);
         })
         .fail((error) => {
@@ -853,13 +852,14 @@ export default class MosaicSession {
 
   getCurrentUser() {
     let self = this;
-
+    var u = self.api + "/user";
     return $.ajax({
       url: self.api + "/user",
       type: "GET",
       contentType: "application/json",
       headers: {
         Authorization: localStorage.getItem("hub-iobio-tkn"),
+        Accept: "application/json",
       },
     });
   }
@@ -909,21 +909,10 @@ export default class MosaicSession {
           reject("Error adding gene set " + error);
         });
     });
-    // self
-    //   .addGeneSet(projectId, analysis)
-    //   .done((response) => {
-    //     console.log("response success!", response);
-    //   })
-    //   .fail((err) => {
-    //     console.log("error", err);
-    //   });
   }
 
   addGeneSet(projectId, analysis) {
     let self = this;
-    console.log("analysis", analysis);
-    console.log(`${self.api}/projects/${projectId}/genes/sets`);
-    console.log("self api", self.api);
     return $.ajax({
       url: `${self.api}/projects/${projectId}/genes/sets`,
       type: "POST",

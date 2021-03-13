@@ -524,18 +524,20 @@ export default {
       if (
         localStorage.getItem("hub-iobio-tkn") &&
         localStorage.getItem("hub-iobio-tkn").length > 0 &&
-        self.paramSampleId &&
         self.paramSource
       ) {
-        self.params.sample_id = self.paramSampleId;
-        self.params.analysis_id = self.paramAnalysisId;
-        self.params.project_id = self.paramProjectId;
-        self.params.source = self.paramSource;
-        self.params.iobio_source = self.paramIobioSource;
         self.params.client_application_id = self.paramClientApplicationId;
-        self.params.gene_set_id = self.paramGeneSetId;
-        self.params.genes = self.paramGenes;
-        self.params.variant_set_id = self.paramVariantSetId;
+        self.params.source = self.paramSource;
+        self.params.project_id = self.paramProjectId;
+
+        // self.params.sample_id = self.paramSampleId;
+        // self.params.analysis_id = self.paramAnalysisId;
+        // self.params.project_id = self.paramProjectId;
+        // self.params.source = self.paramSource;
+        self.params.iobio_source = self.paramIobioSource;
+        // self.params.gene_set_id = self.paramGeneSetId;
+        // self.params.genes = self.paramGenes;
+        // self.params.variant_set_id = self.paramVariantSetId;
 
         if (self.params.analysis_id == "undefined") {
           self.params.analysis_id = null;

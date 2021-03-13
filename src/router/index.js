@@ -10,15 +10,15 @@ const routes = [
     name: "Main",
     component: Main,
     beforeEnter: (to, from, next) => {
-      var idx = to.hash.indexOf("#access_token");
-      if (idx == 0) {
-        let queryParams = Qs.parse(to.hash.substring(1));
-        let {
-          access_token,
-          expires_in,
-          token_type,
-          ...otherQueryParams
-        } = queryParams;
+      let queryParams = to.query;
+      let {
+        access_token,
+        expires_in,
+        token_type,
+        ...otherQueryParams
+      } = queryParams;
+
+      if (access_token) {
         localStorage.setItem("hub-iobio-tkn", token_type + " " + access_token);
         next(
           "/" +
@@ -30,6 +30,29 @@ const routes = [
       } else {
         next();
       }
+
+      var idx = to.hash.indexOf("#access_token");
+
+      // if (idx == 0) {
+      //   let queryParams = Qs.parse(to.hash.substring(1));
+      //   let {
+      //     access_token,
+      //     expires_in,
+      //     token_type,
+      //     ...otherQueryParams
+      //   } = queryParams;
+      //   console.log("access_token", access_token);
+      //   localStorage.setItem("hub-iobio-tkn", token_type + " " + access_token);
+      //   next(
+      //     "/" +
+      //       Qs.stringify(otherQueryParams, {
+      //         addQueryPrefix: true,
+      //         arrayFormat: "brackets",
+      //       })
+      //   );
+      // } else {
+      //   next();
+      // }
     },
     props: (route) => ({
       //paramIdProject:        route.query.idProject,
