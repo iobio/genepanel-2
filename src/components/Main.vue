@@ -328,7 +328,7 @@
           @HpoGeneList="HpoGeneList($event)"
           :AddedGenes="AddedGenes"
           @vennData="vennData($event)"
-          :demoTextNote="analysis.payload.demoTextNote"
+          :demoTextNote="demoTextNote"
           @VennDiagramData="VennDiagramData($event)"
           :geneToDelete="geneToDelete"
           @new_term_searched="new_term_searched($event)"
@@ -483,6 +483,7 @@ export default {
     snackbar_text: "",
     mosaic_gene_set: "",
     launchedFromGenePanel: true,
+    demoTextNote: "",
   }),
 
   created() {
