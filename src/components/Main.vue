@@ -294,7 +294,7 @@
                 color="primary"
                 tile
                 outlined
-                @click.native="saveToMosaicDialog = false"
+                @click.native="cancelSaveGenesToMosaic"
                 style="letter-spacing: normal"
               >
                 Cancel
@@ -780,6 +780,13 @@ export default {
         this.gtrResourceUsed = true;
       }
     },
+    cancelSaveGenesToMosaic() {
+      this.saveToMosaicDialog = false;
+      this.mosaic_genelist_name = "";
+      this.mosaic_genelist_description = "";
+      this.mosaic_analysis_name = "";
+      this.mosaic_analysis_description = "";
+    },
     saveGenelistToMosaic(genes) {
       // console.log("params.project_id", this.params.project_id);
       var analysis = {
@@ -794,6 +801,10 @@ export default {
           this.snackbar_text = `Gene set saved to Mosaic`;
           this.snackbar = true;
           this.saveToMosaicDialog = false;
+          this.mosaic_genelist_name = "";
+          this.mosaic_genelist_description = "";
+          this.mosaic_analysis_name = "";
+          this.mosaic_analysis_description = "";
         })
         .catch((err) => {
           this.snackbar_text = `Failed to add gene set for project id ${this.params.project_id}`;
