@@ -314,6 +314,57 @@
           </template>
         </v-snackbar>
         <!-- End snackbar  -->
+
+        <v-snackbar
+          v-model="feedback_snackbar"
+          top
+          :timeout="feedback_snackbar_timeout"
+        >
+          <div class="row">
+            <div class="col-md-10">
+              <div v-if="!feedback_provided">
+                <span>
+                  Do you find genepanel.iobio helpful?
+                </span>
+
+                <v-btn text @click="onLiked" style="margin:2px">
+                  <v-icon v-if="!liked" style="color:white"
+                    >thumb_up_off_alt</v-icon
+                  >
+                  <v-icon v-if="liked" style="color:white">thumb_up_alt</v-icon>
+                </v-btn>
+
+                <v-btn text @click="onUnLiked" style="margin:2px">
+                  <v-icon v-if="!disliked" style="color:white"
+                    >thumb_down_off_alt</v-icon
+                  >
+                  <v-icon v-if="disliked" style="color:white"
+                    >thumb_down_alt</v-icon
+                  >
+                </v-btn>
+              </div>
+              <div v-else-if="feedback_provided">
+                Thank you for your response!
+                <br />
+                Help us to improve by filling out this questionnaire (Optional).
+                <br />
+                <a href="https://forms.gle/Fdjf37SGXm9JESfN6" target="_blank"
+                  >Questionnaire Link</a
+                >
+              </div>
+            </div>
+            <div class="col-md-2">
+              <v-btn
+                style="margin:0"
+                color="blue"
+                text
+                @click="feedback_snackbar = false"
+              >
+                Close
+              </v-btn>
+            </div>
+          </div>
+        </v-snackbar>
       </v-container>
 
       <v-container>
@@ -333,6 +384,7 @@
           :geneToDelete="geneToDelete"
           @new_term_searched="new_term_searched($event)"
           :textNotesLandingPage="textNotesLandingPage"
+          @close_search_status_dialog="close_search_status_dialog($event)"
         >
         </PhenotypeExtractor>
 
@@ -416,6 +468,7 @@ import DiseaseNames from "../data/DiseaseNamesCleaned.json";
 import TabSlider from "../partials/TabSlider.vue";
 
 import MosaicSession from "../models/MosaicSession";
+import { bus } from "../main";
 
 export default {
   name: "Main",
@@ -484,6 +537,11 @@ export default {
     mosaic_gene_set: "",
     launchedFromGenePanel: true,
     demoTextNote: "",
+    feedback_snackbar: false,
+    feedback_snackbar_timeout: 500000,
+    liked: null,
+    disliked: null,
+    feedback_provided: false,
   }),
 
   created() {
@@ -594,6 +652,8 @@ export default {
     },
     saveSearchedPhenotypes(phenotypes) {
       this.analysis.payload.phenotypes = phenotypes;
+      var note = phenotypes[3][phenotypes[3].length - 1].note.slice(0, 450);
+      this.$ga.event("select_phenotype_data", "Clinical note", note);
     },
     importedGenes(genes) {
       if (this.deletedGenesList.length) {
@@ -814,6 +874,35 @@ export default {
         });
     },
     saveAnalysisToMosaic() {},
+    onLiked() {
+      if (!this.liked) {
+        this.liked = true;
+        this.$ga.event("feedback_type", "Response", "Liked");
+        setTimeout(() => {
+          this.feedback_provided = true;
+        }, 500);
+      } else {
+        this.liked = false;
+        this.feedback_provided = false;
+      }
+    },
+    onUnLiked() {
+      if (!this.disliked) {
+        this.disliked = true;
+        this.$ga.event("feedback_type", "Response", "Disliked");
+        setTimeout(() => {
+          this.feedback_provided = true;
+        }, 500);
+      } else {
+        this.disliked = false;
+        this.feedback_provided = false;
+      }
+    },
+    close_search_status_dialog() {
+      setTimeout(() => {
+        this.feedback_snackbar = true;
+      }, 10500);
+    },
   },
 };
 </script>
