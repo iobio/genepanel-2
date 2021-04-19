@@ -539,6 +539,7 @@ export default {
     demoTextNote: "",
     feedback_snackbar: false,
     feedback_snackbar_timeout: 500000,
+    feedback_snackbar_shown: false,
     liked: null,
     disliked: null,
     feedback_provided: false,
@@ -899,9 +900,16 @@ export default {
       }
     },
     close_search_status_dialog() {
-      setTimeout(() => {
-        this.feedback_snackbar = true;
-      }, 10500);
+      this.feedback_snackbar_shown = localStorage.getItem(
+        "feedbackSnackbarShown"
+      );
+      if (!this.feedback_snackbar_shown) {
+        setTimeout(() => {
+          this.feedback_snackbar = true;
+          this.feedback_snackbar_shown = true;
+          localStorage.setItem("feedbackSnackbarShown", true);
+        }, 10500);
+      }
     },
   },
 };
