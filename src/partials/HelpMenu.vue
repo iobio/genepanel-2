@@ -18,6 +18,9 @@
         <v-list-item @click="onShowSoftwareResources">
           <v-list-item-title>Software and Resources</v-list-item-title>
         </v-list-item>
+        <v-list-item @click="onShowFeedbackNotification">
+          <v-list-item-title>Feedback</v-list-item-title>
+        </v-list-item>
 
         <v-divider></v-divider>
 
@@ -170,6 +173,9 @@ export default {
     },
     onShowSoftwareResources: function() {
       this.showSoftwareResources = true;
+    },
+    onShowFeedbackNotification: function() {
+      bus.$emit("showFeedbackNotification");
     },
   },
 };

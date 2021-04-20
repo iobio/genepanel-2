@@ -1,5 +1,55 @@
 <template>
   <div>
+    <v-snackbar
+      v-model="feedback_snackbar"
+      top
+      :timeout="feedback_snackbar_timeout"
+    >
+      <div class="row">
+        <div class="col-md-10">
+          <div v-if="!feedback_provided">
+            <span>
+              Do you find genepanel.iobio helpful?
+            </span>
+
+            <v-btn text @click="onLiked" style="margin:2px">
+              <v-icon v-if="!liked" style="color:white"
+                >thumb_up_off_alt</v-icon
+              >
+              <v-icon v-if="liked" style="color:white">thumb_up_alt</v-icon>
+            </v-btn>
+
+            <v-btn text @click="onUnLiked" style="margin:2px">
+              <v-icon v-if="!disliked" style="color:white"
+                >thumb_down_off_alt</v-icon
+              >
+              <v-icon v-if="disliked" style="color:white"
+                >thumb_down_alt</v-icon
+              >
+            </v-btn>
+          </div>
+          <div v-else-if="feedback_provided">
+            Thank you for your response!
+            <br />
+            Help us to improve by filling out this questionnaire (Optional).
+            <br />
+            <a href="https://forms.gle/Fdjf37SGXm9JESfN6" target="_blank"
+              >Questionnaire Link</a
+            >
+          </div>
+        </div>
+        <div class="col-md-2">
+          <v-btn
+            style="margin:0"
+            color="blue"
+            text
+            @click="feedback_snackbar = false"
+          >
+            Close
+          </v-btn>
+        </div>
+      </div>
+    </v-snackbar>
     <div v-if="showLandingPage">
       <v-app-bar color="primary" dark>
         <v-toolbar-title class="ml-5">
@@ -314,57 +364,6 @@
           </template>
         </v-snackbar>
         <!-- End snackbar  -->
-
-        <v-snackbar
-          v-model="feedback_snackbar"
-          top
-          :timeout="feedback_snackbar_timeout"
-        >
-          <div class="row">
-            <div class="col-md-10">
-              <div v-if="!feedback_provided">
-                <span>
-                  Do you find genepanel.iobio helpful?
-                </span>
-
-                <v-btn text @click="onLiked" style="margin:2px">
-                  <v-icon v-if="!liked" style="color:white"
-                    >thumb_up_off_alt</v-icon
-                  >
-                  <v-icon v-if="liked" style="color:white">thumb_up_alt</v-icon>
-                </v-btn>
-
-                <v-btn text @click="onUnLiked" style="margin:2px">
-                  <v-icon v-if="!disliked" style="color:white"
-                    >thumb_down_off_alt</v-icon
-                  >
-                  <v-icon v-if="disliked" style="color:white"
-                    >thumb_down_alt</v-icon
-                  >
-                </v-btn>
-              </div>
-              <div v-else-if="feedback_provided">
-                Thank you for your response!
-                <br />
-                Help us to improve by filling out this questionnaire (Optional).
-                <br />
-                <a href="https://forms.gle/Fdjf37SGXm9JESfN6" target="_blank"
-                  >Questionnaire Link</a
-                >
-              </div>
-            </div>
-            <div class="col-md-2">
-              <v-btn
-                style="margin:0"
-                color="blue"
-                text
-                @click="feedback_snackbar = false"
-              >
-                Close
-              </v-btn>
-            </div>
-          </div>
-        </v-snackbar>
       </v-container>
 
       <v-container>
@@ -554,6 +553,12 @@ export default {
 
   mounted() {
     this.init();
+    bus.$on("showFeedbackNotification", () => {
+      this.feedback_snackbar = true;
+      this.liked = null;
+      this.disliked = null;
+      this.feedback_provided = false;
+    });
   },
 
   watch: {
