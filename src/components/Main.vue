@@ -250,7 +250,7 @@
           outlined
           style="color:white"
         >
-          ADD TO MOSAIC
+          SAVE ANALYSIS
         </v-btn>
       </v-app-bar>
 
