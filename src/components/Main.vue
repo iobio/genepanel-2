@@ -384,6 +384,7 @@
           @new_term_searched="new_term_searched($event)"
           :textNotesLandingPage="textNotesLandingPage"
           @close_search_status_dialog="close_search_status_dialog($event)"
+          :launchedFromGenePanel="launchedFromGenePanel"
         >
         </PhenotypeExtractor>
 
