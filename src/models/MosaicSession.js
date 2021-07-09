@@ -906,7 +906,8 @@ export default class MosaicSession {
           resolve(response);
         })
         .fail((error) => {
-          reject("Error adding gene set " + error);
+          var rejectedGenes = error.responseJSON.data;
+          reject(rejectedGenes);
         });
     });
   }

@@ -355,13 +355,26 @@
         <!-- End saveToMosaicDialog -->
 
         <!-- Start snackbar  -->
-        <v-snackbar v-model="snackbar" top>
-          {{ snackbar_text }}
-          <template v-slot:action="{ attrs }">
+        <v-snackbar v-model="snackbar" top :timeout="mosaicSnackBarTimeout">
+          <div class="row">
+            <div class="col-md-10">
+              <span v-html="snackbar_text"></span>
+            </div>
+            <div class="col-md-2">
+              <v-btn
+                style="color: #2a76d2 !important; margin-left: -20px"
+                text
+                @click="snackbar = false"
+              >
+                Close
+              </v-btn>
+            </div>
+          </div>
+          <!-- <template v-slot:action="{ attrs }">
             <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
               Close
             </v-btn>
-          </template>
+          </template> -->
         </v-snackbar>
         <!-- End snackbar  -->
       </v-container>
@@ -543,6 +556,10 @@ export default {
     liked: null,
     disliked: null,
     feedback_provided: false,
+    genesListSavedToMosaic: [],
+    mosaicRejectedGenes: [],
+    multiLine: true,
+    mosaicSnackBarTimeout: 9000,
   }),
 
   created() {
@@ -818,6 +835,7 @@ export default {
         const csvExporter = new ExportToCsv(options);
         csvExporter.generateCsv(csv_data);
       } else if (this.exportAction === "saveGenelistToMosaic") {
+        this.mosaicRejectedGenes = [];
         this.saveGenelistToMosaic(obj.selected);
       }
 
@@ -856,6 +874,7 @@ export default {
       this.mosaic_analysis_description = "";
     },
     saveGenelistToMosaic(genes) {
+      this.genesListSavedToMosaic = genes;
       // console.log("params.project_id", this.params.project_id);
       var analysis = {
         name: this.mosaic_genelist_name,
@@ -866,7 +885,12 @@ export default {
       this.mosaicSession
         .promiseAddGeneSet(this.params.project_id, analysis)
         .then((response) => {
-          this.snackbar_text = `Gene set saved to Mosaic`;
+          if (this.mosaicRejectedGenes.length) {
+            var str = this.mosaicRejectedGenes.join(", ");
+            this.snackbar_text = `<strong>Gene set saved to Mosaic</strong><br> Bypassed genes: ${str}.`;
+          } else {
+            this.snackbar_text = `<strong>Gene set saved to Mosaic</strong>`;
+          }
           this.snackbar = true;
           this.saveToMosaicDialog = false;
           this.mosaic_genelist_name = "";
@@ -874,11 +898,21 @@ export default {
           this.mosaic_analysis_name = "";
           this.mosaic_analysis_description = "";
         })
-        .catch((err) => {
-          this.snackbar_text = `Failed to add gene set for project id ${this.params.project_id}`;
-          this.snackbar = true;
+        .catch((rejectedGenes) => {
           this.saveToMosaicDialog = false;
+          this.mosaicRejectedGenes = rejectedGenes;
+          this.bypassRejectedGenesAndTryToSave(rejectedGenes);
         });
+    },
+    bypassRejectedGenesAndTryToSave(rejectedGenes) {
+      var genes = this.genesListSavedToMosaic;
+      var res = genes.filter((gene) => !rejectedGenes.includes(gene));
+      if (res.length) {
+        this.saveGenelistToMosaic(res);
+      } else {
+        this.snackbar_text = `Failed to add gene set for project id ${this.params.project_id}`;
+        this.snackbar = true;
+      }
     },
     saveAnalysisToMosaic() {},
     onLiked() {
