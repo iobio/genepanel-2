@@ -9,6 +9,9 @@
       </template>
 
       <v-list>
+        <v-list-item @click="onShowUserGuide">
+          <v-list-item-title>User Guide</v-list-item-title>
+        </v-list-item>
         <v-list-item @click="onShowTermsOfService">
           <v-list-item-title>Terms of Service</v-list-item-title>
         </v-list-item>
@@ -161,6 +164,12 @@ export default {
     },
     onShowDisclaimer: function() {
       this.showDisclaimer = true;
+    },
+    onShowUserGuide: function() {
+      window.open(
+        "https://aditya-ekawade.gitbook.io/my-docs-space/genepanel.iobio/getting-started",
+        "_iobio"
+      );
     },
     onShowBlog: function() {
       window.open("http://iobio.io/blog.html", "_iobio");
