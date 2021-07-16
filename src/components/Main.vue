@@ -75,7 +75,7 @@
       > -->
       <div
         dark
-        style="height: 450px; background-color: #f9fbff; padding-top: 150px; padding-bottom:200px"
+        style="height: 400px; background-color: #f9fbff; padding-top: 150px; padding-bottom:200px"
         class="pt-5 elevation-1"
       >
         <v-row align="center" justify="center" style="margin-top: 30px">
@@ -146,7 +146,7 @@
                   </template>
                 </v-textarea>
 
-                <div style="float: left !important">
+                <div style="display: block">
                   Try some suggestions:
                   <v-chip
                     class="ma-2"
@@ -354,6 +354,34 @@
         </v-dialog>
         <!-- End saveToMosaicDialog -->
 
+        <!-- Start Video dialog -->
+        <v-dialog v-model="videoDialog" max-width="925">
+          <v-card>
+            <v-card-title class="headline"></v-card-title>
+
+            <v-card-text v-if="videoDialog">
+              <iframe
+                width="875"
+                height="492.1875"
+                src="https://www.youtube.com/embed/xfrtkMKrPtw"
+                frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-btn color="primary darken-1" text @click="videoDialog = false">
+                Close
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <!-- End video dialog  -->
+
         <!-- Start snackbar  -->
         <v-snackbar v-model="snackbar" top :timeout="mosaicSnackBarTimeout">
           <div class="row">
@@ -432,6 +460,23 @@
     >
       <v-container>
         <div class="container text-center">
+          <div class="mt-2 mr-6">
+            <v-btn
+              @click.stop="videoDialog = true"
+              class="mr-5"
+              outlined
+              color="black"
+            >
+              <v-icon>play_circle_outline</v-icon>
+              <span class="ml-1">Watch video</span>
+            </v-btn>
+            <v-btn class="ml-5" outlined color="black" @click="onShowUserGuide">
+              <v-icon>description</v-icon>
+              <span class="ml-1">User guide</span>
+            </v-btn>
+          </div>
+          <br />
+          <hr />
           <div class="row">
             <div class="col-md-4">
               <span>HPO terms</span>
@@ -560,6 +605,7 @@ export default {
     mosaicRejectedGenes: [],
     multiLine: true,
     mosaicSnackBarTimeout: 9000,
+    videoDialog: false,
   }),
 
   created() {
@@ -950,6 +996,12 @@ export default {
           localStorage.setItem("feedbackSnackbarShown", true);
         }, 10500);
       }
+    },
+    onShowUserGuide() {
+      window.open(
+        "https://iobio.gitbook.io/genepanel-docs/",
+        "_iobio_user_guide"
+      );
     },
   },
 };
