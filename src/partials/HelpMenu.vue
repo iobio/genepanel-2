@@ -9,6 +9,12 @@
       </template>
 
       <v-list>
+        <v-list-item @click="onShowUserGuide">
+          <v-list-item-title>User Guide</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="onShowVideoTutorial">
+          <v-list-item-title>Video tutorial</v-list-item-title>
+        </v-list-item>
         <v-list-item @click="onShowTermsOfService">
           <v-list-item-title>Terms of Service</v-list-item-title>
         </v-list-item>
@@ -161,6 +167,18 @@ export default {
     },
     onShowDisclaimer: function() {
       this.showDisclaimer = true;
+    },
+    onShowUserGuide: function() {
+      window.open(
+        "https://iobio.gitbook.io/genepanel-docs/",
+        "_iobio-userguide"
+      );
+    },
+    onShowVideoTutorial: function() {
+      window.open(
+        "https://www.youtube.com/watch?v=xfrtkMKrPtw&ab_channel=iobio",
+        "_iobio-tutorial"
+      );
     },
     onShowBlog: function() {
       window.open("http://iobio.io/blog.html", "_iobio");

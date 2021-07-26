@@ -75,7 +75,7 @@
       > -->
       <div
         dark
-        style="height: 450px; background-color: #f9fbff; padding-top: 150px; padding-bottom:200px"
+        style="height: 400px; background-color: #f9fbff; padding-top: 150px; padding-bottom:200px"
         class="pt-5 elevation-1"
       >
         <v-row align="center" justify="center" style="margin-top: 30px">
@@ -146,7 +146,7 @@
                   </template>
                 </v-textarea>
 
-                <div style="float: left !important">
+                <div style="display: block">
                   Try some suggestions:
                   <v-chip
                     class="ma-2"
@@ -250,7 +250,7 @@
           outlined
           style="color:white"
         >
-          ADD TO MOSAIC
+          SAVE ANALYSIS
         </v-btn>
       </v-app-bar>
 
@@ -354,14 +354,55 @@
         </v-dialog>
         <!-- End saveToMosaicDialog -->
 
+        <!-- Start Video dialog -->
+        <v-dialog v-model="videoDialog" max-width="925">
+          <v-card>
+            <v-card-title class="headline"></v-card-title>
+
+            <v-card-text v-if="videoDialog">
+              <iframe
+                width="875"
+                height="492.1875"
+                src="https://www.youtube.com/embed/xfrtkMKrPtw"
+                frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-btn color="primary darken-1" text @click="videoDialog = false">
+                Close
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <!-- End video dialog  -->
+
         <!-- Start snackbar  -->
-        <v-snackbar v-model="snackbar" top>
-          {{ snackbar_text }}
-          <template v-slot:action="{ attrs }">
+        <v-snackbar v-model="snackbar" top :timeout="mosaicSnackBarTimeout">
+          <div class="row">
+            <div class="col-md-10">
+              <span v-html="snackbar_text"></span>
+            </div>
+            <div class="col-md-2">
+              <v-btn
+                style="color: #2a76d2 !important; margin-left: -20px"
+                text
+                @click="snackbar = false"
+              >
+                Close
+              </v-btn>
+            </div>
+          </div>
+          <!-- <template v-slot:action="{ attrs }">
             <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
               Close
             </v-btn>
-          </template>
+          </template> -->
         </v-snackbar>
         <!-- End snackbar  -->
       </v-container>
@@ -384,6 +425,7 @@
           @new_term_searched="new_term_searched($event)"
           :textNotesLandingPage="textNotesLandingPage"
           @close_search_status_dialog="close_search_status_dialog($event)"
+          :launchedFromGenePanel="launchedFromGenePanel"
         >
         </PhenotypeExtractor>
 
@@ -418,6 +460,23 @@
     >
       <v-container>
         <div class="container text-center">
+          <div class="mt-2 mr-6">
+            <v-btn
+              @click.stop="videoDialog = true"
+              class="mr-5"
+              outlined
+              color="black"
+            >
+              <v-icon>play_circle_outline</v-icon>
+              <span class="ml-1">Watch video</span>
+            </v-btn>
+            <v-btn class="ml-5" outlined color="black" @click="onShowUserGuide">
+              <v-icon>description</v-icon>
+              <span class="ml-1">User guide</span>
+            </v-btn>
+          </div>
+          <br />
+          <hr />
           <div class="row">
             <div class="col-md-4">
               <span>HPO terms</span>
@@ -542,6 +601,11 @@ export default {
     liked: null,
     disliked: null,
     feedback_provided: false,
+    genesListSavedToMosaic: [],
+    mosaicRejectedGenes: [],
+    multiLine: true,
+    mosaicSnackBarTimeout: 9000,
+    videoDialog: false,
   }),
 
   created() {
@@ -817,6 +881,7 @@ export default {
         const csvExporter = new ExportToCsv(options);
         csvExporter.generateCsv(csv_data);
       } else if (this.exportAction === "saveGenelistToMosaic") {
+        this.mosaicRejectedGenes = [];
         this.saveGenelistToMosaic(obj.selected);
       }
 
@@ -855,6 +920,7 @@ export default {
       this.mosaic_analysis_description = "";
     },
     saveGenelistToMosaic(genes) {
+      this.genesListSavedToMosaic = genes;
       // console.log("params.project_id", this.params.project_id);
       var analysis = {
         name: this.mosaic_genelist_name,
@@ -865,7 +931,12 @@ export default {
       this.mosaicSession
         .promiseAddGeneSet(this.params.project_id, analysis)
         .then((response) => {
-          this.snackbar_text = `Gene set saved to Mosaic`;
+          if (this.mosaicRejectedGenes.length) {
+            var str = this.mosaicRejectedGenes.join(", ");
+            this.snackbar_text = `<strong>Gene set saved to Mosaic</strong><br> Bypassed genes: ${str}.`;
+          } else {
+            this.snackbar_text = `<strong>Gene set saved to Mosaic</strong>`;
+          }
           this.snackbar = true;
           this.saveToMosaicDialog = false;
           this.mosaic_genelist_name = "";
@@ -873,11 +944,21 @@ export default {
           this.mosaic_analysis_name = "";
           this.mosaic_analysis_description = "";
         })
-        .catch((err) => {
-          this.snackbar_text = `Failed to add gene set for project id ${this.params.project_id}`;
-          this.snackbar = true;
+        .catch((rejectedGenes) => {
           this.saveToMosaicDialog = false;
+          this.mosaicRejectedGenes = rejectedGenes;
+          this.bypassRejectedGenesAndTryToSave(rejectedGenes);
         });
+    },
+    bypassRejectedGenesAndTryToSave(rejectedGenes) {
+      var genes = this.genesListSavedToMosaic;
+      var res = genes.filter((gene) => !rejectedGenes.includes(gene));
+      if (res.length) {
+        this.saveGenelistToMosaic(res);
+      } else {
+        this.snackbar_text = `Failed to add gene set for project id ${this.params.project_id}`;
+        this.snackbar = true;
+      }
     },
     saveAnalysisToMosaic() {},
     onLiked() {
@@ -915,6 +996,12 @@ export default {
           localStorage.setItem("feedbackSnackbarShown", true);
         }, 10500);
       }
+    },
+    onShowUserGuide() {
+      window.open(
+        "https://iobio.gitbook.io/genepanel-docs/",
+        "_iobio_user_guide"
+      );
     },
   },
 };
