@@ -426,6 +426,18 @@
           :textNotesLandingPage="textNotesLandingPage"
           @close_search_status_dialog="close_search_status_dialog($event)"
           :launchedFromGenePanel="launchedFromGenePanel"
+          :scaled_hpo_scores_props="analysis.payload.scaledHpoScores"
+          :specificityScoreBrushArea="
+            analysis.payload.specificityScoreBrushArea
+          "
+          :hpo_genes_bar_chart_props="analysis.payload.hpoGenesCountForBarChart"
+          :hpo_bar_chart_brush_area_props="
+            analysis.payload.hpoBarChartBrushArea
+          "
+          @hpo_bar_chart_brush_area="hpo_bar_chart_brush_area($event)"
+          @scaled_hpo_scores="scaled_hpo_scores($event)"
+          @specificity_brush_area="specificity_brush_area($event)"
+          @hpo_genes_bar_chart="hpo_genes_bar_chart($event)"
         >
         </PhenotypeExtractor>
 
@@ -449,6 +461,25 @@
           :PhenolyzerResourceUsed="PhenolyzerResourceUsed"
           :mosaic_gene_set="mosaic_gene_set"
           :launchedFromGenePanel="launchedFromGenePanel"
+          :stateHpoSummaryGenesProps="stateHpoSummaryGenesProps"
+          :stateSummaryGenesProps="stateSummaryGenesProps"
+          :filterTermsIntersectTextProps="
+            analysis.payload.filterTermsIntersectText
+          "
+          :filterSpecificityScoreTextProps="
+            analysis.payload.filterSpecificityScoreText
+          "
+          :setGenesOverlapFlagProps="analysis.payload.setGenesOverlapFlag"
+          :setSpecificityScoreFlagProps="
+            analysis.payload.setSpecificityScoreFlag
+          "
+          @state_hpo_summary_genes="state_hpo_summary_genes($event)"
+          @state_summary_genes="state_summary_genes($event)"
+          @reorder_summary_genes="reorder_summary_genes($event)"
+          @filter_terms_inspect_text="filter_terms_inspect_text($event)"
+          @filter_specificity_score_text="filter_specificity_score_text($event)"
+          @set_genes_overlap_flag="set_genes_overlap_flag($event)"
+          @set_specificity_score_flag="set_specificity_score_flag($event)"
         >
         </GeneList>
       </v-container>
@@ -606,6 +637,8 @@ export default {
     multiLine: true,
     mosaicSnackBarTimeout: 9000,
     videoDialog: false,
+    stateSummaryGenesProps: [],
+    stateHpoSummaryGenesProps: [],
   }),
 
   created() {
@@ -1002,6 +1035,36 @@ export default {
         "https://iobio.gitbook.io/genepanel-docs/",
         "_iobio_user_guide"
       );
+    },
+    scaled_hpo_scores(scores) {
+      this.analysis.payload.scaledHpoScores = scores;
+    },
+    hpo_bar_chart_brush_area(area) {
+      this.analysis.payload.hpoBarChartBrushArea = area;
+    },
+    specificity_brush_area(area) {
+      this.analysis.payload.specificityScoreBrushArea = area;
+    },
+    hpo_genes_bar_chart(count) {
+      this.analysis.payload.hpoGenesCountForBarChart = count;
+    },
+    state_hpo_summary_genes(genes) {
+      this.analysis.payload.stateHpoSummaryGenes = genes;
+    },
+    state_summary_genes(genes) {
+      this.analysis.payload.stateSummaryGenes = genes;
+    },
+    filter_terms_inspect_text(text) {
+      this.analysis.payload.filterTermsIntersectText = text;
+    },
+    filter_specificity_score_text(text) {
+      this.analysis.payload.filterSpecificityScoreText = text;
+    },
+    set_genes_overlap_flag(flag) {
+      this.analysis.payload.setGenesOverlapFlag = flag;
+    },
+    set_specificity_score_flag(flag) {
+      this.analysis.payload.setSpecificityScoreFlag = flag;
     },
   },
 };
