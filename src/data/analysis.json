@@ -7,7 +7,7 @@
       "DLL4",
       "ABCA3",
       "MROH8",
-      "DVL3" ,
+      "DVL3",
       "NOTCH4"
     ],
     "VennDiagramData": {
@@ -87,7 +87,7 @@
         "tasks": [
           {
             "key": "review-full",
-            "badges": [{"label": "9 variants"}],
+            "badges": [{ "label": "9 variants" }],
             "passed": false,
             "complete": false
           }
@@ -135,10 +135,7 @@
         "order": 1,
         "userFlagged": false,
         "maxAf": 0.01,
-        "clinvar": [
-          "clinvar_path",
-          "clinvar_lpath"
-        ],
+        "clinvar": ["clinvar_path", "clinvar_lpath"],
         "impact": null,
         "consequence": null,
         "inheritance": null,
@@ -157,21 +154,14 @@
         "userFlagged": false,
         "maxAf": 0.01,
         "clinvar": null,
-        "impact": [
-          "HIGH",
-          "MODERATE"
-        ],
+        "impact": ["HIGH", "MODERATE"],
         "consequence": null,
-        "inheritance": [
-          "autosomal dominant"
-        ],
+        "inheritance": ["autosomal dominant"],
         "zyosity": null,
         "minGenotypeDepth": null,
         "minGenotypeAltCount": null,
         "minRevel": null,
-        "exclusiveOf": [
-          "pathogenic"
-        ]
+        "exclusiveOf": ["pathogenic"]
       },
       "recessive": {
         "active": true,
@@ -182,22 +172,15 @@
         "userFlagged": false,
         "maxAf": 0.01,
         "clinvar": null,
-        "impact": [
-          "HIGH",
-          "MODERATE"
-        ],
+        "impact": ["HIGH", "MODERATE"],
         "consequence": null,
-        "inheritance": [
-          "recessive"
-        ],
+        "inheritance": ["recessive"],
         "zyosity": null,
         "minGenotypeDepth": null,
         "minGenotypeAltCount": 5,
         "minRevel": null,
         "isUserFlagged": false,
-        "exclusiveOf": [
-          "pathogenic"
-        ]
+        "exclusiveOf": ["pathogenic"]
       },
       "denovo": {
         "active": true,
@@ -208,21 +191,14 @@
         "userFlagged": false,
         "maxAf": 0.01,
         "clinvar": null,
-        "impact": [
-          "HIGH",
-          "MODERATE"
-        ],
+        "impact": ["HIGH", "MODERATE"],
         "consequence": null,
-        "inheritance": [
-          "denovo"
-        ],
+        "inheritance": ["denovo"],
         "zyosity": null,
         "minGenotypeDepth": null,
         "minGenotypeAltCount": 5,
         "minRevel": null,
-        "exclusiveOf": [
-          "pathogenic"
-        ]
+        "exclusiveOf": ["pathogenic"]
       },
       "compoundHet": {
         "active": true,
@@ -233,21 +209,14 @@
         "userFlagged": false,
         "maxAf": 0.05,
         "clinvar": null,
-        "impact": [
-          "HIGH",
-          "MODERATE"
-        ],
+        "impact": ["HIGH", "MODERATE"],
         "consequence": null,
-        "inheritance": [
-          "compound het"
-        ],
+        "inheritance": ["compound het"],
         "zyosity": null,
         "minGenotypeDepth": null,
         "minGenotypeAltCount": null,
         "minRevel": null,
-        "exclusiveOf": [
-          "pathogenic"
-        ]
+        "exclusiveOf": ["pathogenic"]
       },
       "xlinked": {
         "active": true,
@@ -258,21 +227,14 @@
         "order": 6,
         "maxAf": 0.01,
         "clinvar": null,
-        "impact": [
-          "HIGH",
-          "MODERATE"
-        ],
+        "impact": ["HIGH", "MODERATE"],
         "consequence": null,
-        "inheritance": [
-          "x-linked"
-        ],
+        "inheritance": ["x-linked"],
         "zyosity": null,
         "minGenotypeDepth": null,
         "minGenotypeAltCount": null,
         "minRevel": null,
-        "exclusiveOf": [
-          "pathogenic"
-        ]
+        "exclusiveOf": ["pathogenic"]
       },
       "high": {
         "active": false,
@@ -283,9 +245,7 @@
         "userFlagged": false,
         "maxAf": 0.01,
         "clinvar": null,
-        "impact": [
-          "HIGH"
-        ],
+        "impact": ["HIGH"],
         "consequence": null,
         "inheritance": null,
         "zyosity": null,
@@ -1074,18 +1034,28 @@
       }
     ],
     "sample_id": "108",
-    "phenotypes": [[],[], [], []],
+    "phenotypes": [[], [], [], []],
     "project_id": "32",
     "genesManual": [],
     "genesReport": [],
     "gtrFullList": [],
-    "demoTextNote": "Charcot-Marie-Tooth disease; demyelination; Dejerine sottas disease possibly; sensory neuropathy; hammertoes; difficulty walking",  
+    "demoTextNote": "Charcot-Marie-Tooth disease; demyelination; Dejerine sottas disease possibly; sensory neuropathy; hammertoes; difficulty walking",
     "workflow_id": "2",
     "genesPhenolyzer": [],
     "datetime_created": 1567199654086,
     "hpoFullList": [],
     "phenolyzerFullList": [],
-    "datetime_last_modified": 1573062574944
+    "datetime_last_modified": 1573062574944,
+    "scaledHpoScores": [],
+    "specificityScoreBrushArea": [],
+    "hpoGenesCountForBarChart": [],
+    "hpoBarChartBrushArea": [],
+    "stateHpoSummaryGenes": [],
+    "stateSummaryGenes": [],
+    "filterTermsIntersectText": "",
+    "filterSpecificityScoreText": "",
+    "setGenesOverlapFlag": false,
+    "setSpecificityScoreFlag": false
   },
   "updated_at": "2019-11-06T15:08:54.647Z",
   "id": 74,
