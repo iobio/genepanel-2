@@ -300,6 +300,7 @@
                       v-model="user_name"
                       name="user_name"
                       label="Name"
+                      required
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" style="margin-top: -20px">
@@ -308,6 +309,8 @@
                       outlined
                       name="email"
                       label="Email"
+                      required
+                      :rules="emailRules"
                     ></v-text-field>
                   </v-col>
 
@@ -317,11 +320,17 @@
                       name="message"
                       label="Message"
                       v-model="message"
+                      required
                     ></v-textarea>
                   </v-col>
 
                   <v-col cols="12" md="12" style="margin-top: -20px">
-                    <v-btn outlined type="submit" color="primary">
+                    <v-btn
+                      :disabled="!email.length || !message.length"
+                      outlined
+                      type="submit"
+                      color="primary"
+                    >
                       <v-icon class="mr-1">send</v-icon>Send
                     </v-btn>
                   </v-col>
@@ -721,6 +730,10 @@ export default {
     collaborateDialog: false,
     user_name: "",
     email: "",
+    emailRules: [
+      (v) => !!v || "E-mail is required",
+      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+    ],
     message: "",
   }),
 
