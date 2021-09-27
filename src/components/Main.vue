@@ -51,11 +51,16 @@
       </div>
     </v-snackbar>
     <div v-if="showLandingPage">
-      <v-app-bar color="primary" dark>
+      <v-app-bar fixed color="primary" dark>
         <v-toolbar-title class="ml-5">
           <strong>genepanel.iobio</strong>
         </v-toolbar-title>
         <v-spacer></v-spacer>
+        <v-btn text @click="collaborateDialog = true">
+          <v-icon>groups</v-icon>
+          <strong class="ml-0">COLLABORATE WITH US</strong>
+        </v-btn>
+
         <help-menu></help-menu>
         <a
           href="https://bmcmedgenomics.biomedcentral.com/articles/10.1186/s12920-019-0641-1"
@@ -196,7 +201,7 @@
     </div>
 
     <div v-show="!showLandingPage">
-      <v-app-bar color="primary" dark>
+      <v-app-bar fixed color="primary" dark>
         <v-toolbar-title class="ml-5">
           <strong>genepanel.iobio</strong>
         </v-toolbar-title>
@@ -233,6 +238,10 @@
           <v-icon>autorenew</v-icon>
           <strong class="ml-1">CLEAR ALL</strong>
         </v-btn>
+        <v-btn text @click="collaborateDialog = true">
+          <v-icon>groups</v-icon>
+          <strong class="ml-0">COLLABORATE WITH US</strong>
+        </v-btn>
         <help-menu></help-menu>
         <a
           href="https://bmcmedgenomics.biomedcentral.com/articles/10.1186/s12920-019-0641-1"
@@ -255,6 +264,74 @@
       </v-app-bar>
 
       <v-container>
+        <!-- Start collaborate Dialog  -->
+        <v-dialog v-model="collaborateDialog" persistent max-width="750">
+          <v-card>
+            <v-card-title class="text-h5 grey lighten-2">
+              <v-icon>groups</v-icon>Collaborate with us
+              <v-spacer></v-spacer>
+              <v-btn @click="collaborateDialog = false" icon
+                ><v-icon>close</v-icon></v-btn
+              >
+            </v-card-title>
+            <v-card-text class="mt-1">
+              <div class="container">
+                <v-col cols="12" md="12">
+                  <div>
+                    Thank you for using genepanel.iobio. <br />
+                    Iobio has a suite of tools to aid in your genomic research.
+                    We have apps for Variant Interrogation, Variant Inspection,
+                    and a variant analysis workflow tool! We would like
+                    collaborate with you using our tools to help you in your
+                    project. You can submit your ideas/ requirements using the
+                    form below. Additionally you can provide your feedback to
+                    the apps using the same form.
+                    <br />Thanks!
+                  </div>
+                </v-col>
+                <form
+                  ref="form"
+                  @submit.prevent="sendEmail"
+                  class="collaborate-form"
+                >
+                  <v-col cols="12" md="12">
+                    <v-text-field
+                      outlined
+                      v-model="user_name"
+                      name="user_name"
+                      label="Name"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="12" style="margin-top: -20px">
+                    <v-text-field
+                      v-model="email"
+                      outlined
+                      name="email"
+                      label="Email"
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col cols="12" md="12" style="margin-top: -20px">
+                    <v-textarea
+                      outlined
+                      name="message"
+                      label="Message"
+                      v-model="message"
+                    ></v-textarea>
+                  </v-col>
+
+                  <v-col cols="12" md="12" style="margin-top: -20px">
+                    <v-btn outlined type="submit" color="primary">
+                      <v-icon class="mr-1">send</v-icon>Send
+                    </v-btn>
+                  </v-col>
+                </form>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+        <!-- End collaborate Dialog -->
+
         <!-- Start newAnalysisDialog  -->
         <v-dialog v-model="newAnalysisDialog" persistent max-width="450">
           <v-card>
@@ -559,6 +636,8 @@ import TabSlider from "../partials/TabSlider.vue";
 import MosaicSession from "../models/MosaicSession";
 import { bus } from "../main";
 
+import emailjs from "emailjs-com";
+
 export default {
   name: "Main",
 
@@ -639,6 +718,10 @@ export default {
     videoDialog: false,
     stateSummaryGenesProps: [],
     stateHpoSummaryGenesProps: [],
+    collaborateDialog: false,
+    user_name: "",
+    email: "",
+    message: "",
   }),
 
   created() {
@@ -1066,6 +1149,27 @@ export default {
     set_specificity_score_flag(flag) {
       this.analysis.payload.setSpecificityScoreFlag = flag;
     },
+    sendEmail(e) {
+      try {
+        emailjs.sendForm(
+          process.env.VUE_APP_MY_ENV_SERVICE_ID,
+          VUE_APP_MY_ENV_TEMPLATE_ID,
+          this.$refs.form,
+          VUE_APP_MY_ENV_VARIABLE_EMAILJS_USER_ID,
+          {
+            name: this.name,
+            email: this.email,
+            message: this.message,
+          }
+        );
+      } catch (error) {
+        console.log({ error });
+      }
+      // Reset form field
+      this.user_name = "";
+      this.email = "";
+      this.message = "";
+    },
   },
 };
 </script>
@@ -1105,6 +1209,10 @@ export default {
 .v-parallax
   background-color: #f9fbff
 
+// .collaborate-form
+//   label
+//     font-weight: 100 !important
+
 
 @media (min-width: 960px)
   .container
@@ -1137,4 +1245,11 @@ export default {
 @media (min-width: 1635px)
   .container
     max-width: 1635px
+</style>
+
+<style>
+.v-text-field--outlined .v-label {
+  top: 18px;
+  font-weight: 100;
+}
 </style>
