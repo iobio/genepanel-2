@@ -58,7 +58,7 @@
         <v-spacer></v-spacer>
         <v-btn text @click="collaborateDialog = true">
           <v-icon>groups</v-icon>
-          <strong class="ml-0">COLLABORATE WITH US</strong>
+          <strong style="margin-left: -15px">COLLABORATE WITH US</strong>
         </v-btn>
 
         <help-menu></help-menu>
@@ -80,7 +80,7 @@
       > -->
       <div
         dark
-        style="height: 400px; background-color: #f9fbff; padding-top: 150px; padding-bottom:200px"
+        style="height: 400px; background-color: #f9fbff; margin-top: 65px; padding-top: 150px; padding-bottom:200px"
         class="pt-5 elevation-1"
       >
         <v-row align="center" justify="center" style="margin-top: 30px">
@@ -240,7 +240,7 @@
         </v-btn>
         <v-btn text @click="collaborateDialog = true">
           <v-icon>groups</v-icon>
-          <strong class="ml-0">COLLABORATE WITH US</strong>
+          <strong style="margin-left: -15px">COLLABORATE WITH US</strong>
         </v-btn>
         <help-menu></help-menu>
         <a
@@ -493,7 +493,7 @@
         <!-- End snackbar  -->
       </v-container>
 
-      <v-container>
+      <v-container style="margin-top: 65px;">
         <PhenotypeExtractor
           :phenotypes="analysis.payload.phenotypes"
           :summaryFullGeneList="analysis.payload.summaryGeneList"
@@ -1085,7 +1085,8 @@ export default {
       if (res.length) {
         this.saveGenelistToMosaic(res);
       } else {
-        this.snackbar_text = `Failed to add gene set for project id ${this.params.project_id}`;
+        // this.snackbar_text = `Failed to add gene set for project id ${this.params.project_id}`;
+        this.snackbar_text = `Failed to save the gene set because the gene(s) are not recognized by Mosaic`;
         this.snackbar = true;
       }
     },
