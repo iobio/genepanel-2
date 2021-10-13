@@ -277,22 +277,37 @@
             <v-card-text class="mt-1">
               <div class="container">
                 <v-col cols="12" md="12">
-                  <div>
-                    Thank you for using genepanel.iobio. <br />
-                    Iobio has a suite of tools to aid in your genomic research.
-                    We have apps for Variant Interrogation, Variant Inspection,
-                    and a variant analysis workflow tool! We would like
-                    collaborate with you using our tools to help you in your
-                    project. You can submit your ideas/ requirements using the
-                    form below. Additionally you can provide your feedback to
-                    the apps using the same form.
-                    <br />Thanks!
+                  <div style="text-align: justify">
+                    <v-alert
+                      v-model="contactFormAlert"
+                      :icon="contactFormStateData.icon"
+                      dense
+                      text
+                      :type="contactFormStateData.type"
+                    >
+                      {{ contactFormStateData.message }}
+                    </v-alert>
+                    <div v-if="!contactFormAlert">
+                      Thank you for using genepanel.iobio; one of a suite of
+                      tools to aid in with genomic research from
+                      <a href="https://iobio.io/" target="_blank">iobio.io</a>.
+                      <br />
+                      We would love to collaborate on projects, and also
+                      appreciate any feedback, suggestions, or comments on these
+                      tools in order to improve them, or make them better able
+                      to support your research projects.
+                      <br />
+                      Please use the form below to leave your comments.
+                      <br />
+                      <br />Thank you!
+                    </div>
                   </div>
                 </v-col>
                 <form
                   ref="form"
                   @submit.prevent="sendEmail"
                   class="collaborate-form"
+                  v-if="!contactFormAlert"
                 >
                   <v-col cols="12" md="12">
                     <v-text-field
@@ -735,6 +750,12 @@ export default {
       (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
     ],
     message: "",
+    contactFormStateData: {
+      icon: "check",
+      type: "success",
+      message: "Your message was sent successfully. Thank you!",
+    },
+    contactFormAlert: false,
   }),
 
   created() {
@@ -1165,24 +1186,44 @@ export default {
     },
     sendEmail(e) {
       try {
-        emailjs.sendForm(
-          process.env.VUE_APP_MY_ENV_SERVICE_ID,
-          VUE_APP_MY_ENV_TEMPLATE_ID,
-          this.$refs.form,
-          VUE_APP_MY_ENV_VARIABLE_EMAILJS_USER_ID,
-          {
-            name: this.name,
-            email: this.email,
-            message: this.message,
-          }
-        );
+        emailjs
+          .sendForm(
+            process.env.VUE_APP_MY_ENV_SERVICE_ID,
+            process.env.VUE_APP_MY_ENV_TEMPLATE_ID,
+            this.$refs.form,
+            process.env.VUE_APP_MY_ENV_VARIABLE_EMAILJS_USER_ID,
+            {
+              name: this.user_name,
+              email: this.email,
+              message: this.message,
+            }
+          )
+          .then((res) => {
+            this.contactFormAlert = true;
+            this.contactFormStateData = {
+              icon: "check",
+              type: "success",
+              message: "Your message was sent successfully. Thank you!",
+            };
+            // Reset form field
+            this.user_name = "";
+            this.email = "";
+            this.message = "";
+          });
       } catch (error) {
         console.log({ error });
+        this.contactFormAlert = true;
+        this.contactFormStateData = {
+          icon: "error",
+          type: "error",
+          message:
+            "There was an error processing this form. Please try again or email us at iobioproject@gmail.com",
+        };
+        // Reset form field
+        this.user_name = "";
+        this.email = "";
+        this.message = "";
       }
-      // Reset form field
-      this.user_name = "";
-      this.email = "";
-      this.message = "";
     },
   },
 };
